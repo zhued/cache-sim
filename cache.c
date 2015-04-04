@@ -1,10 +1,7 @@
 /* Cache implementation */
 
 #include "cache.h"
-void init_l1_cache(struct l1_config *l1, struct cache *cache)
-{
-	cache->buf = malloc(l1->l1_cache_size * l1->l1_assoc);
-}
+#include <stdlib.h>
 
 struct cache l1_i = {
 	.block_size = 32,
@@ -33,7 +30,7 @@ struct cache l2 = {
 	.buf = NULL
 };
 
-void init_l2_cache(struct l2_config *l2, struct cache *cache)
+void init_cache(struct cache *cache)
 {
-	cache->buf = malloc(l2->l2_cache_size * l2->l2_assoc);
+	cache->buf = malloc(cache->cache_size * cache->assoc);
 }
