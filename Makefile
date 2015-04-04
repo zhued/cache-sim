@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall -g -O2
 BIN=cache-sim
-OBJ=main.o config.o
+OBJ=main.o config.o cache.o
 
 %.o : %.c
 	$(CC) -o $@ -c $< $(CFLAGS)
