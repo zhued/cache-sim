@@ -6,6 +6,16 @@
 #include "config.h"
 #include "cache.h"
 
+void process_trace(struct cache *l1i, struct cache *l1d, struct cache *l2, struct mem_config *mem)
+{
+	char op;
+	unsigned long long address;
+	unsigned int bytesize;
+	while (scanf("%c %Lx %d\n", &op, &address, &bytesize) == 3) {
+		printf("%c %Lx %d\n", op, address, bytesize);
+	}
+}
+
 int main(int argc, char **argv)
 {
 	int transfer_time;
@@ -15,6 +25,8 @@ int main(int argc, char **argv)
 	if (argc > 1) {
 		load_config(argv[1], &l1_i, &l1_d, &l2, &mem, &transfer_time, &bus_width);
 	}
+
+	process_trace();
 
 	return 0;
 }
