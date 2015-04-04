@@ -16,6 +16,32 @@ struct cache {
 	struct block **buf;	/* Indexed by cache index then way */
 };
 
+struct cache_stats {
+	unsigned long requests;
+	unsigned long hits;
+	unsigned long kickouts;
+	unsigned long dirty_kickouts;
+	unsigned long transfers;
+	unsigned long flush_kickouts;
+}
+
+struct stats {
+	unsigned long reads;
+	unsigned long writes;
+	unsigned long insts;
+	unsigned long read_cycles;
+	unsigned long write_cycles;
+	unsigned long inst_cycles;
+	unsigned long flush_time;
+	unsigned long ideal_cycles;
+	unsigned long ideal_misaligned;
+	unsigned long flushes;
+	unsigned long invalidates;
+	struct cache_stats l1i;
+	struct cache_stats l1d;
+	struct cache_stats l2;
+};
+
 extern struct cache l1_d;
 extern struct cache l1_i;
 extern struct cache l2;
