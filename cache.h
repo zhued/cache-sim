@@ -1,5 +1,7 @@
 /* Cache Data Structure */
 
+#pragma once
+
 struct block {
 	int tag;
 	int valid;
