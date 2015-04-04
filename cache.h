@@ -23,7 +23,7 @@ struct cache_stats {
 	unsigned long dirty_kickouts;
 	unsigned long transfers;
 	unsigned long flush_kickouts;
-}
+};
 
 struct stats {
 	unsigned long reads;
