@@ -32,5 +32,5 @@ struct cache l2 = {
 
 void init_cache(struct cache *cache)
 {
-	cache->buf = malloc(cache->cache_size * cache->assoc);
+	cache->buf = malloc(cache->cache_size * cache->assoc * sizeof(block));
 }
