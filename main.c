@@ -32,6 +32,10 @@ int main(int argc, char **argv)
 		load_config(argv[1], &l1_i, &l1_d, &l2, &mem, &transfer_time, &bus_width);
 	}
 
+	init_cache(&l1_i);
+	init_cache(&l1_d);
+	init_cache(&l2);
+
 	process_trace(&l1_i, &l1_d, &l2, &mem, &sim_stats);
 
 	return 0;
