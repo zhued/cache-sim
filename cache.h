@@ -6,6 +6,11 @@ struct block {
 };
 
 struct cache {
+	int block_size;
+	int cache_size;
+	int assoc;
+	int hit_time;
+	int miss_time;
 	struct block **buf;	/* Indexed by cache index then way */
 };
 
