@@ -10,7 +10,7 @@ struct lru {
 };
 
 struct block {
-	int tag;
+	unsigned long tag;
 	int valid;
 	int dirty;
 };
@@ -32,6 +32,8 @@ struct cache {
 	struct block *buf;	/* Indexed by cache index then way */
 	struct lru **lrus;
 	struct cache *backend;
+	int req_size;
+	const char *name;
 };
 
 
@@ -59,6 +61,7 @@ void init_cache(struct cache *cache);
 
 void dispatch_write(struct cache *cache, unsigned long addr, int bytes);
 void dispatch_read(struct cache *cache, unsigned long addr, int bytes);
-bool cache_write(struct cache *cache, unsigned long index, unsigned long tag);
-bool cache_read(struct cache *cache, unsigned long index, unsigned long tag);
+bool cache_write(struct cache *cache, unsigned long addr);
+bool cache_read(struct cache *cache, unsigned long addr);
 void l2_l1_transfer(struct cache *l1, struct cache *l2, int l2_transfer_time, int l2_bus_width);
+void print_cache(struct cache *cache);
