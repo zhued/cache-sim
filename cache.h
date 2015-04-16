@@ -28,6 +28,8 @@ struct cache {
 		unsigned long dirty_kickouts;
 		unsigned long transfers;
 		unsigned long flush_kickouts;
+		unsigned long reads;
+		unsigned long writes;
 	} cache_stats;
 	struct block *buf;	/* Indexed by cache index then way */
 	struct lru **lrus;
@@ -65,3 +67,4 @@ bool cache_write(struct cache *cache, unsigned long addr);
 bool cache_read(struct cache *cache, unsigned long addr);
 void l2_l1_transfer(struct cache *l1, struct cache *l2, int l2_transfer_time, int l2_bus_width);
 void print_cache(struct cache *cache);
+void cache_flush(struct cache *cache);
