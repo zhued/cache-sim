@@ -11,31 +11,42 @@ static inline unsigned long int log_2(unsigned long int x)
 	return i;
 }
 
+static inline int buf_index(struct cache *cache, int row, int column)
+{
+	return row * cache->assoc + column;
+}
+
 struct cache l1_i = {
 	.block_size = 32,
-	.cache_size = 8192,
+	.cache_size = 256,
 	.assoc = 1,
 	.hit_time = 1,
 	.miss_time = 1,
-	.buf = NULL
+	.buf = NULL,
+	.req_size = 4,
+	.name = "l1_i"
 };
 
 struct cache l1_d = {
 	.block_size = 32,
-	.cache_size = 8192,
+	.cache_size = 256,
 	.assoc = 1,
 	.hit_time = 1,
 	.miss_time = 1,
-	.buf = NULL
+	.buf = NULL,
+	.req_size = 4,
+	.name = "l1_d"
 };
 
 struct cache l2 = {
 	.block_size = 64,
-	.cache_size = 32768,
+	.cache_size = 512,
 	.assoc = 1,
 	.hit_time = 5,
 	.miss_time = 7,
-	.buf = NULL
+	.buf = NULL,
+	.req_size = 64,
+	.name = "l2"
 };
 
 struct stat_struct stats;
@@ -56,14 +67,29 @@ static void update_lru(struct cache *cache, int index, int way)
 	cache->lrus[index]->next = prev;
 }
 
-static void decompose_addr(struct cache* cache, unsigned long addr, int *tag, int *index, int *bi)
+static void decompose_addr(struct cache* cache,
+			   unsigned long addr,
+			   unsigned long *tag,
+			   unsigned long *index,
+			   unsigned long *bi)
 {
-	int block_bits = log_2(cache->block_size);
-	int block_index_bits = log_2(cache->block_size * cache->cache_size);
+	unsigned long block_bits = log_2(cache->block_size);
+	unsigned long block_index_bits = log_2(cache->block_size * cache->cache_size);
 
 	*bi = addr & (cache->block_size - 1);
 	*index = (addr >> block_bits) & (cache->cache_size - 1);
-	*tag = (addr >> block_index_bits) & ( (1 << (48 - block_index_bits)) - 1 );
+	*tag = (addr >> block_index_bits);
+}
+
+static unsigned long compose_addr(struct cache* cache,
+				  unsigned long tag,
+				  unsigned long index,
+				  unsigned long bi)
+{
+	unsigned long block_bits = log_2(cache->block_size);
+	unsigned long block_index_bits = log_2(cache->block_size * cache->cache_size);
+
+	return (tag << block_index_bits) | (index << block_bits) | bi;
 }
 
 void init_cache(struct cache *cache)
@@ -81,79 +107,158 @@ void init_cache(struct cache *cache)
 			cur->elem = j;
 		}
 		cur->next = NULL;
+
+		for (int j = 0; j < cache->assoc; j++) {
+			struct block *b = &cache->buf[buf_index(cache, i, j)];
+			/* printf("%#lx\n", b); */
+			b->tag = 0;
+			b->valid = 0;
+			b->dirty = 0;
+		}
 	}
 }
 
 
 void dispatch_write(struct cache *cache, unsigned long addr, int bytes)
 {
-	int block_index, index, tag;
+	unsigned long block_index, index, tag;
+	unsigned long aligned = addr & ~(cache->req_size - 1);
 	decompose_addr(cache, addr, &tag, &index, &block_index);
-	
-	bytes -= cache->block_size - block_index;
-	cache_write(cache, index, tag);
+
+	bytes -= cache->req_size - (addr - aligned);
+	cache_read(cache, aligned);
 
 	while (bytes > 0) {
-		index++;
-		cache_write(cache, index, tag);
-		bytes -= cache->block_size;
+		aligned += cache->req_size;
+		decompose_addr(cache, aligned, &tag, &index, &block_index);
+		cache_write(cache, aligned);
+		bytes -= cache->req_size;
 	}
 }
 
 void dispatch_read(struct cache *cache, unsigned long addr, int bytes)
 {
-	int block_index, index, tag;
-	unsigned long aligned = addr & ~(cache->block_size - 1);
+	unsigned long block_index, index, tag;
+	unsigned long aligned = addr & ~(cache->req_size-1);
 	decompose_addr(cache, addr, &tag, &index, &block_index);
 
-	bytes -= cache->block_size - block_index;
-	cache_read(cache, index, tag);
+	bytes -= cache->req_size - (addr - aligned);
+	cache_read(cache, aligned);
 
 	while (bytes > 0) {
-		aligned += cache->block_size;
+		aligned += cache->req_size;
 		decompose_addr(cache, aligned, &tag, &index, &block_index);
-		cache_read(cache, index, tag);
-		bytes -= cache->block_size;
+		cache_read(cache, aligned);
+		bytes -= cache->req_size;
 	}
 }
 
-bool cache_write(struct cache *cache, unsigned long index, unsigned long tag)
+bool cache_write(struct cache *cache, unsigned long addr)
 {
-	/* int block_index, index, tag; */
-	/* decompose_addr(cache, addr, &tag, &index, &block_index); */
-	return false;
-}
+	unsigned long index, tag, bi;
+	decompose_addr(cache, addr, &tag, &index, &bi);
 
-bool cache_read(struct cache *cache, unsigned long index, unsigned long tag)
-{
-	/* int block_index, index, tag; */
-	/* decompose_addr(cache, addr, &tag, &index, &block_index); */
+	int row = index * cache->assoc;
 
-	int row = index * cache->assoc * sizeof(struct block);
+	/* printf("Cache write: %s\n", cache->name); */
+	cache->cache_stats.requests++;
 
 	for (int i = 0; i < cache->assoc; i++) {
-		int idx = row + i * sizeof(struct block);
+		int idx = buf_index(cache, index, i);
 		if (cache->buf[idx].valid && cache->buf[idx].tag == tag) {
 			/* Hit */
+			cache->cache_stats.hits++;
+			/* printf("Write hit!\n"); */
+			/* printf("Index: %lx\n", index); */
+			/* printf("Tag: %lx\n\n", tag); */
+			cache->buf[idx].dirty = 1;
 			return false;
 		}
 	}
 
-	/* struct lru *cur = cache->lrus[index]; */
-	/* for (int i = 0; i < cache->assoc - 1; i++) { */
-	/* 	cur = cur->next; */
-	/* } */
+	/* Miss */
+	/* printf("Write miss!\n"); */
+	/* printf("Index: %lx\n", index); */
+	/* printf("Tag: %lx\n\n", tag); */
 
-	/* if (cache->buf[row + cur->elem * sizeof(struct block)].dirty) { */
-	/* 	if (cache->backend) { */
-	/* 		cache_write(cache->backend, addr, bytes); */
-	/* } */
+	if (cache->buf[row].dirty) {
+		if (cache->backend) {
+			cache_write(cache->backend, addr);
+		} else {
+			/* Go to memory */
+		}
+	}
 
-	/* cache->buf[row + cur->elem * sizeof(struct block)].tag = tag; */
-	/* cache->buf[row + cur->elem * sizeof(struct block)].valid = 1; */
-	/* cache->buf[row + cur->elem * sizeof(sizeof block)].dirty = 0; */
+	if (cache->backend) {
+		dispatch_read(cache->backend, addr, cache->block_size);
+	} else {
+		/* Go to memory */
+	}
 
-	printf("Index: %lx\n", index);
-	printf("Tag: %lx\n", tag);
+	cache->buf[row].tag = tag;
+	cache->buf[row].valid = 1;
+	cache->buf[row].dirty = 1;
+
 	return true;
+}
+
+bool cache_read(struct cache *cache, unsigned long addr)
+{
+	unsigned long index, tag, bi;
+	decompose_addr(cache, addr, &tag, &index, &bi);
+
+	int row = index * cache->assoc;
+
+	cache->cache_stats.requests++;
+
+	for (int i = 0; i < cache->assoc; i++) {
+		int idx = buf_index(cache, index, i);
+		if (cache->buf[idx].valid && cache->buf[idx].tag == tag) {
+			/* Hit */
+			cache->cache_stats.hits++;
+			/* printf("Read hit!\n"); */
+			/* printf("Index: %lx\n", index); */
+			/* printf("Tag: %lx\n\n", tag); */
+			return false;
+		}
+	}
+
+	/* Miss */
+	/* printf("Read miss!\n"); */
+	/* printf("Index: %lx\n", index); */
+	/* printf("Tag: %lx\n\n", tag); */
+
+	if (cache->buf[row].dirty) {
+		if (cache->backend) {
+			int writeaddr = compose_addr(cache,
+						     cache->buf[row].tag,
+						     index,
+						     bi);
+			dispatch_write(cache->backend, writeaddr, cache->block_size);
+		} else {
+			/* Go to memory */
+		}
+	}
+
+	if (cache->backend) {
+		dispatch_read(cache->backend, addr & ~(cache->block_size-1), cache->block_size);
+	} else {
+		/* Go to memory */
+	}
+
+	cache->buf[row].tag = tag;
+	cache->buf[row].valid = 1;
+	cache->buf[row].dirty = 0;
+
+	return true;
+}
+
+void print_cache(struct cache *cache)
+{
+	for (unsigned long i = 0; i < cache->cache_size; i++) {
+		struct block *b = &cache->buf[buf_index(cache, i, 0)];
+		if (b->valid) {
+			printf("Index: %#lx | V:%d D: %d Tag: %#lx\n", i, b->valid, b->dirty, b->tag);
+		}
+	}
 }
