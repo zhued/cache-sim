@@ -89,7 +89,7 @@ void dispatch_write(struct cache *cache, unsigned long addr, int bytes)
 {
 	int block_index, index, tag;
 	decompose_addr(cache, addr, &tag, &index, &block_index);
-
+	
 	bytes -= cache->block_size - block_index;
 	cache_write(cache, index, tag);
 
