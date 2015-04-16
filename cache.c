@@ -89,7 +89,7 @@ static unsigned long compose_addr(struct cache* cache,
 	unsigned long block_bits = log_2(cache->block_size);
 	unsigned long block_index_bits = log_2(cache->block_size * cache->cache_size);
 
-	return (tag << block_index_bits) | (index << block_bits) | bi;
+	return (tag << block_index_bits) | (index << block_bits);
 }
 
 void init_cache(struct cache *cache)
@@ -126,7 +126,7 @@ void dispatch_write(struct cache *cache, unsigned long addr, int bytes)
 	decompose_addr(cache, addr, &tag, &index, &block_index);
 
 	bytes -= cache->req_size - (addr - aligned);
-	cache_read(cache, aligned);
+	cache_write(cache, aligned);
 
 	while (bytes > 0) {
 		aligned += cache->req_size;
@@ -146,6 +146,8 @@ void dispatch_read(struct cache *cache, unsigned long addr, int bytes)
 	cache_read(cache, aligned);
 
 	while (bytes > 0) {
+		/* if (strcmp(cache->name, "l2") == 0) */
+		/* 	printf("L2: %d\n", bytes); */
 		aligned += cache->req_size;
 		decompose_addr(cache, aligned, &tag, &index, &block_index);
 		cache_read(cache, aligned);
@@ -160,37 +162,43 @@ bool cache_write(struct cache *cache, unsigned long addr)
 
 	int row = index * cache->assoc;
 
-	/* printf("Cache write: %s\n", cache->name); */
 	cache->cache_stats.requests++;
+	cache->cache_stats.writes++;
 
 	for (int i = 0; i < cache->assoc; i++) {
 		int idx = buf_index(cache, index, i);
 		if (cache->buf[idx].valid && cache->buf[idx].tag == tag) {
 			/* Hit */
 			cache->cache_stats.hits++;
-			/* printf("Write hit!\n"); */
-			/* printf("Index: %lx\n", index); */
-			/* printf("Tag: %lx\n\n", tag); */
 			cache->buf[idx].dirty = 1;
 			return false;
 		}
 	}
 
 	/* Miss */
-	/* printf("Write miss!\n"); */
-	/* printf("Index: %lx\n", index); */
-	/* printf("Tag: %lx\n\n", tag); */
+	if (cache->buf[row].valid) {
+		cache->cache_stats.kickouts++;
+		if (cache->buf[row].dirty) {
+			cache->cache_stats.dirty_kickouts++;
+		}
+	}
 
-	if (cache->buf[row].dirty) {
+	if (cache->buf[row].dirty && cache->buf[row].valid) {
 		if (cache->backend) {
-			cache_write(cache->backend, addr);
+			unsigned long writeaddr = compose_addr(cache,
+							       cache->buf[row].tag,
+							       index,
+							       bi);
+			/* dispatch_write(cache->backend, writeaddr, cache->block_size); */
+			cache_write(cache->backend, writeaddr);
 		} else {
 			/* Go to memory */
 		}
 	}
 
 	if (cache->backend) {
-		dispatch_read(cache->backend, addr, cache->block_size);
+		/* dispatch_read(cache->backend, addr, cache->block_size); */
+		cache_read(cache->backend, addr);
 	} else {
 		/* Go to memory */
 	}
@@ -210,38 +218,41 @@ bool cache_read(struct cache *cache, unsigned long addr)
 	int row = index * cache->assoc;
 
 	cache->cache_stats.requests++;
+	cache->cache_stats.reads++;
 
 	for (int i = 0; i < cache->assoc; i++) {
 		int idx = buf_index(cache, index, i);
 		if (cache->buf[idx].valid && cache->buf[idx].tag == tag) {
 			/* Hit */
 			cache->cache_stats.hits++;
-			/* printf("Read hit!\n"); */
-			/* printf("Index: %lx\n", index); */
-			/* printf("Tag: %lx\n\n", tag); */
 			return false;
 		}
 	}
 
 	/* Miss */
-	/* printf("Read miss!\n"); */
-	/* printf("Index: %lx\n", index); */
-	/* printf("Tag: %lx\n\n", tag); */
+	if (cache->buf[row].valid) {
+		cache->cache_stats.kickouts++;
+		if (cache->buf[row].dirty) {
+			cache->cache_stats.dirty_kickouts++;
+		}
+	}
 
-	if (cache->buf[row].dirty) {
+	if (cache->buf[row].dirty && cache->buf[row].valid) {
 		if (cache->backend) {
-			int writeaddr = compose_addr(cache,
-						     cache->buf[row].tag,
-						     index,
-						     bi);
-			dispatch_write(cache->backend, writeaddr, cache->block_size);
+			unsigned long writeaddr = compose_addr(cache,
+							       cache->buf[row].tag,
+							       index,
+							       bi);
+			/* dispatch_write(cache->backend, writeaddr, cache->block_size); */
+			cache_write(cache->backend, writeaddr);
 		} else {
 			/* Go to memory */
 		}
 	}
 
 	if (cache->backend) {
-		dispatch_read(cache->backend, addr & ~(cache->block_size-1), cache->block_size);
+		/* dispatch_read(cache->backend, addr & ~(cache->block_size-1), cache->block_size); */
+		cache_read(cache->backend, addr);
 	} else {
 		/* Go to memory */
 	}
@@ -251,6 +262,20 @@ bool cache_read(struct cache *cache, unsigned long addr)
 	cache->buf[row].dirty = 0;
 
 	return true;
+}
+
+void cache_flush(struct cache *cache) {
+	for (unsigned long i = 0; i < cache->cache_size; i++) {
+		struct block *b = &cache->buf[buf_index(cache, i, 0)];
+		if (b->dirty) {
+			if (cache->backend) {
+				int writeaddr = compose_addr(cache, b->tag, i, 0);
+				dispatch_read(cache->backend, writeaddr, cache->block_size);
+			}
+			cache->cache_stats.flush_kickouts++;
+		}
+		b->valid = 0;
+	}
 }
 
 void print_cache(struct cache *cache)
