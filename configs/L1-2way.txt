@@ -1,0 +1,2 @@
+l1_assoc_i=2
+l1_assoc_d=2

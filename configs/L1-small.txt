@@ -1,0 +1,2 @@
+l1_cache_size_i=4096
+l1_cache_size_d=4096
