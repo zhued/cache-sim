@@ -18,7 +18,7 @@ static inline int buf_index(struct cache *cache, int row, int column)
 
 struct cache l1_i = {
 	.block_size = 32,
-	.cache_size = 256,
+	.cache_size = 8196,
 	.assoc = 1,
 	.hit_time = 1,
 	.miss_time = 1,
@@ -29,7 +29,7 @@ struct cache l1_i = {
 
 struct cache l1_d = {
 	.block_size = 32,
-	.cache_size = 256,
+	.cache_size = 8196,
 	.assoc = 1,
 	.hit_time = 1,
 	.miss_time = 1,
@@ -40,7 +40,7 @@ struct cache l1_d = {
 
 struct cache l2 = {
 	.block_size = 64,
-	.cache_size = 512,
+	.cache_size = 32768,
 	.assoc = 1,
 	.hit_time = 5,
 	.miss_time = 7,
@@ -94,6 +94,7 @@ static unsigned long compose_addr(struct cache* cache,
 
 void init_cache(struct cache *cache)
 {
+	cache->cache_size /= cache->block_size;
 	cache->buf = malloc(cache->cache_size * cache->assoc * sizeof(struct block));
 	cache->lrus = malloc(cache->cache_size * sizeof(struct lru*));
 
@@ -146,8 +147,6 @@ void dispatch_read(struct cache *cache, unsigned long addr, int bytes)
 	cache_read(cache, aligned);
 
 	while (bytes > 0) {
-		/* if (strcmp(cache->name, "l2") == 0) */
-		/* 	printf("L2: %d\n", bytes); */
 		aligned += cache->req_size;
 		decompose_addr(cache, aligned, &tag, &index, &block_index);
 		cache_read(cache, aligned);
@@ -189,7 +188,6 @@ bool cache_write(struct cache *cache, unsigned long addr)
 							       cache->buf[row].tag,
 							       index,
 							       bi);
-			/* dispatch_write(cache->backend, writeaddr, cache->block_size); */
 			cache_write(cache->backend, writeaddr);
 		} else {
 			/* Go to memory */
@@ -197,7 +195,6 @@ bool cache_write(struct cache *cache, unsigned long addr)
 	}
 
 	if (cache->backend) {
-		/* dispatch_read(cache->backend, addr, cache->block_size); */
 		cache_read(cache->backend, addr);
 	} else {
 		/* Go to memory */
@@ -229,6 +226,7 @@ bool cache_read(struct cache *cache, unsigned long addr)
 		}
 	}
 
+
 	/* Miss */
 	if (cache->buf[row].valid) {
 		cache->cache_stats.kickouts++;
@@ -243,7 +241,6 @@ bool cache_read(struct cache *cache, unsigned long addr)
 							       cache->buf[row].tag,
 							       index,
 							       bi);
-			/* dispatch_write(cache->backend, writeaddr, cache->block_size); */
 			cache_write(cache->backend, writeaddr);
 		} else {
 			/* Go to memory */
@@ -251,7 +248,6 @@ bool cache_read(struct cache *cache, unsigned long addr)
 	}
 
 	if (cache->backend) {
-		/* dispatch_read(cache->backend, addr & ~(cache->block_size-1), cache->block_size); */
 		cache_read(cache->backend, addr);
 	} else {
 		/* Go to memory */
@@ -270,7 +266,7 @@ void cache_flush(struct cache *cache) {
 		if (b->dirty) {
 			if (cache->backend) {
 				int writeaddr = compose_addr(cache, b->tag, i, 0);
-				dispatch_read(cache->backend, writeaddr, cache->block_size);
+				cache_write(cache->backend, writeaddr);
 			}
 			cache->cache_stats.flush_kickouts++;
 		}
