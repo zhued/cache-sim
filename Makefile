@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -g -O2 --std=gnu99
+CFLAGS=-Wall -g --std=gnu99
 BIN=cache-sim
 OBJ=main.o config.o cache.o
 
