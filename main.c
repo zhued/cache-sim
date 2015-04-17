@@ -17,25 +17,24 @@ void process_trace(struct cache *l1i,
 	int bytesize;
 	unsigned long insts = 0;
 	while (scanf("%c %lx %d\n", &op, &address, &bytesize) == 3) {
+		/* printf("%c %lx %d\n", op, address, bytesize); */
 		switch (op) {
 		case 'I':
-			/* printf("%c %lx %d\n", op, address, bytesize); */
 			insts++;
 			dispatch_read(l1i, address, bytesize);
 			stats.insts++;
 			break;
 		case 'W':
-			/* printf("%c %lx %d\n", op, address, bytesize); */
 			dispatch_write(l1d, address, bytesize);
 			stats.writes++;
 			break;
 		case 'R':
-			/* printf("%c %lx %d\n", op, address, bytesize); */
 			dispatch_read(l1d , address, bytesize);
 			stats.reads++;
 			break;
 		}
 		if (insts > 380000) {
+			printf("Cache flush\n");
 			insts = 0;
 			cache_flush(l1i);
 			cache_flush(l1d);
@@ -107,10 +106,15 @@ void output_stats(struct stat_struct *result, struct mem_config *mem, struct cac
 	printf("    Flush Kickouts  =  %lld\n", l2->cache_stats.flush_kickouts);
 	printf("\n");
 
-	// printf("L1 cache cost (Icache $%d) + (Dcache $%d) = $%d\n", icache->cost, dcache->cost, icache->cost+dcache->cost);
-	// printf("L2 cache cost = $%d;   Memory Cost = $%d\n", l2cache->cost, memcost);
-	// printf("Total cost = $%d\n", memcost+icache->cost+dcache->cost+l2cache->cost);
-	// printf("\n");
+	int l1_i_cost = ((l1_i->cache_size * l1_i->block_size * l1_i->assoc) / 4096) * (100 + 100 * log_2(l1_i->assoc));
+	int l1_d_cost = ((l1_d->cache_size * l1_d->block_size * l1_d->assoc) / 4096) * (100 + 100 * log_2(l1_d->assoc));
+	printf("Size of L2: %d\n", (l2->cache_size * l2->block_size * l2->assoc));
+	int l2_cost = (50 * (l2->cache_size * l2->block_size * l2->assoc)) / 65536 + 50 * log_2(l2->assoc);
+	int memcost = log_2(mem->mem_ready / 30) * 200 + log_2(mem->mem_chunktime / 15) * 100 + 75;
+	printf("L1 cache cost (Icache $%d) + (Dcache $%d) = $%d\n", l1_i_cost, l1_d_cost, l1_i_cost+l1_d_cost);
+	printf("L2 cache cost = $%d;   Memory Cost = $%d\n", l2_cost, memcost);
+	/* printf("Total cost = $%d\n", l1_i_cost + l1_d_cost + l2_cost + memcost); */
+	printf("\n");
 }
 
 int main(int argc, char **argv)
@@ -133,7 +137,7 @@ int main(int argc, char **argv)
 
 	process_trace(&l1_i, &l1_d, &l2, &mem);
 
-	/* print_cache(&l1_d); */
+	print_cache(&l1_d);
 
 	/* printf("L1i requests: %ld\n", l1_i.cache_stats.requests); */
 	/* printf("L1i hits: %ld\n", l1_i.cache_stats.hits); */
@@ -154,7 +158,7 @@ int main(int argc, char **argv)
 	/* printf("L2 misses: %ld\n", l2.cache_stats.requests - l2.cache_stats.hits); */
 	/* printf("L2 kickout: %ld\n", l2.cache_stats.kickouts); */
 	/* printf("L2 dirty kickout: %ld\n\n", l2.cache_stats.dirty_kickouts); */
-
+	
 	output_stats(&stats, &mem, &l1_i, &l1_d, &l2);
 
 	return 0;

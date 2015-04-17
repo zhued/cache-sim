@@ -63,8 +63,15 @@ void init_cache(struct cache *cache);
 
 void dispatch_write(struct cache *cache, unsigned long addr, int bytes);
 void dispatch_read(struct cache *cache, unsigned long addr, int bytes);
-bool cache_write(struct cache *cache, unsigned long addr);
-bool cache_read(struct cache *cache, unsigned long addr);
+int cache_write(struct cache *cache, unsigned long addr);
+int cache_read(struct cache *cache, unsigned long addr);
 void l2_l1_transfer(struct cache *l1, struct cache *l2, int l2_transfer_time, int l2_bus_width);
 void print_cache(struct cache *cache);
 void cache_flush(struct cache *cache);
+
+static inline unsigned long int log_2(unsigned long int x)
+{
+	unsigned long int i = 0;
+	while (x != 1) { x >>= 1; i++; }
+	return i;
+}
