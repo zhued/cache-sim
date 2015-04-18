@@ -21,12 +21,14 @@ struct cache {
 	int assoc;
 	int hit_time;
 	int miss_time;
+	int req_size;
+	int transfer_time;
+	int bus_width;
 	struct {
 		unsigned long requests;
 		unsigned long hits;
 		unsigned long kickouts;
 		unsigned long dirty_kickouts;
-		unsigned long transfers;
 		unsigned long flush_kickouts;
 		unsigned long reads;
 		unsigned long writes;
@@ -34,7 +36,6 @@ struct cache {
 	struct block *buf;	/* Indexed by cache index then way */
 	struct lru **lrus;
 	struct cache *backend;
-	int req_size;
 	const char *name;
 };
 
@@ -61,13 +62,13 @@ extern struct stat_struct stats;
 
 void init_cache(struct cache *cache);
 
-void dispatch_write(struct cache *cache, unsigned long addr, int bytes);
-void dispatch_read(struct cache *cache, unsigned long addr, int bytes);
+int dispatch_write(struct cache *cache, unsigned long addr, int bytes);
+int dispatch_read(struct cache *cache, unsigned long addr, int bytes);
 int cache_write(struct cache *cache, unsigned long addr);
 int cache_read(struct cache *cache, unsigned long addr);
 void l2_l1_transfer(struct cache *l1, struct cache *l2, int l2_transfer_time, int l2_bus_width);
 void print_cache(struct cache *cache);
-void cache_flush(struct cache *cache);
+unsigned long cache_flush(struct cache *cache);
 
 static inline unsigned long int log_2(unsigned long int x)
 {
