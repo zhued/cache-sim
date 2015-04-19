@@ -211,8 +211,11 @@ int cache_write(struct cache *cache, unsigned long addr)
 							       index,
 							       bi);
 			cumulative_miss_time += cache_write(cache->backend, writeaddr);
+			cumulative_miss_time += cache->transfer_time * (cache->block_size / cache->bus_width);
 		} else {
 			/* Go to memory */
+			cumulative_miss_time += mem.mem_sendaddr + mem.mem_ready +
+				(mem.mem_chunktime * cache->block_size / mem.mem_chunksize);
 		}
 	}
 
@@ -276,8 +279,12 @@ int cache_read(struct cache *cache, unsigned long addr)
 							       index,
 							       bi);
 			cumulative_miss_time += cache_write(cache->backend, writeaddr);
+			cumulative_miss_time += cache->transfer_time *
+				(cache->block_size / cache->bus_width);
 		} else {
 			/* Go to memory */
+			cumulative_miss_time += mem.mem_sendaddr + mem.mem_ready +
+				(mem.mem_chunktime * cache->block_size / mem.mem_chunksize);
 		}
 	}
 
@@ -306,6 +313,12 @@ unsigned long cache_flush(struct cache *cache) {
 				if (cache->backend) {
 					int writeaddr = compose_addr(cache, b->tag, i, 0);
 					cost += cache_write(cache->backend, writeaddr);
+					cost += cache->transfer_time *
+						(cache->block_size / cache->bus_width);
+				} else {
+					cost += mem.mem_sendaddr + mem.mem_ready +
+						(mem.mem_chunktime *
+						 cache->block_size / mem.mem_chunksize);
 				}
 				cache->cache_stats.flush_kickouts++;
 			}
