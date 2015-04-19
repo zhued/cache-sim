@@ -1,4 +1,4 @@
 l1_assoc_i=256
 l1_assoc_d=256
-l2_assoc=512
+l2_assoc=1024
 l2_cache_size=65536
