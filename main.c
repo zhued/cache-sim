@@ -50,7 +50,7 @@ void process_trace(struct cache *l1i,
 void output_stats(struct stat_struct *result, struct mem_config *mem, struct cache *l1_i, struct cache *l1_d, struct cache *l2)
 {
 	printf("------------------------------------------------------------\n");
-	printf(" 		<trace>.<config>		Simulation Results          \n");
+	printf("		<trace>.<config>		Simulation Results          \n");
 	printf("------------------------------------------------------------\n");
 	printf("\n");
 	printf("Memory System:\n");
@@ -59,12 +59,12 @@ void output_stats(struct stat_struct *result, struct mem_config *mem, struct cac
 	printf("    L2-cache Size = %d : ways = %d : block size = %d\n", l2->cache_size * l2->block_size, l2->assoc,l2->block_size);
 	printf("    Memory ready time = %d : chunksize = %d : chunktime = %d\n", mem->mem_ready, mem->mem_chunksize, mem->mem_chunktime);
 	printf("\n");
-	
-	// printf("Execute Time = %ld; Total References = %ld\n", <extime>, <refnum+1>);
-	// printf("Flush Time = %ld\n", <flushtime>);
+
+	printf("Execute Time = %ld; Total References = %ld\n", result->read_cycles + result->write_cycles + result->inst_cycles, result->reads + result->writes + result->insts);
+	printf("Flush Time = %ld\n", result->flush_time);
 	printf("Inst refs = %ld; Data refs = %ld\n",result->insts,result->reads + result->writes);
 	printf("\n");
-	
+
 	printf("Number of references types: [Percentage]\n");
 	printf("    Reads  =     %ld    [%.1f%%]\n", result->reads ,100*((double)result->reads)/(result->reads+result->writes+result->insts));
 	printf("    Writes =     %ld    [%.1f%%]\n", result->writes,100*((double)result->writes)/(result->reads+result->writes+result->insts));
@@ -79,11 +79,12 @@ void output_stats(struct stat_struct *result, struct mem_config *mem, struct cac
 	printf("    Inst.  =     %ld    [%.1f%%]\n",result->inst_cycles,100*((double)(result->inst_cycles))/extime);
 	printf("    Total  =     %ld\n",extime);
 	printf("\n");
-	
-	/* printf("Average cycles for activiites: [Percentage]\n"); */
-	/* printf("  Read =  %f; Write =  %f; Inst. =  %f\n",((double)result->read_cycles)/(dcache->rrefs),((double)result->write_cycles)/(dcache->wrefs),((double)extime)/(icache->rrefs)); */
-	/* printf("Ideal: Exec. Time = %ld; CPI =  %f\n",dcache->rrefs+dcache->wrefs+2*icache->rrefs,((double)dcache->rrefs+dcache->wrefs+2*icache->rrefs)/(icache->rrefs)); */
-	/* printf("Ideal mis-aligned: Exec. Time = %ld; CPI =  %f\n",dcache->rrefs+dcache->wrefs+2*icache->rrefs+misallignment,((double)dcache->rrefs+dcache->wrefs+2*icache->rrefs+misallignment)/(icache->rrefs)) */;
+
+	printf("Average cycles for activiites: [Percentage]\n");
+	printf("  Read =  %.1f; Write =  %.1f; Inst. =  %.1f\n",((double)result->read_cycles)/(result->reads),((double)result->write_cycles)/(result->writes),((double)result->inst_cycles)/(result->insts));
+	printf("Ideal: Exec. Time = %ld; CPI =  %.1f\n",result->reads + result->writes + 2*result->insts,((double)result->reads+result->writes+2*result->insts)/(result->insts));
+	unsigned long misaligned_exec = result->insts + l1_i->cache_stats.requests + l1_d->cache_stats.requests;
+	printf("Ideal mis-aligned: Exec. Time = %ld; CPI = %.1f\n", misaligned_exec, ((double)misaligned_exec / result->insts));
 	printf("\n");
 
 	printf("Memory Level: L1i\n");
@@ -93,7 +94,7 @@ void output_stats(struct stat_struct *result, struct mem_config *mem, struct cac
 	printf("    Kickouts = %ld; Dirty Kickouts = %ld; Transfers = %ld\n",l1_i->cache_stats.kickouts,l1_i->cache_stats.dirty_kickouts,l1_i->cache_stats.flush_kickouts + l1_i->cache_stats.requests - l1_i->cache_stats.hits);
 	printf("    Flush Kickouts  =  %ld\n", l1_i->cache_stats.flush_kickouts);
 	printf("\n");
-	
+
 	printf("Memory Level: L1d\n");
 	printf("    Hit Count = %ld  Miss Count = %ld\n",l1_d->cache_stats.hits,l1_d->cache_stats.requests - l1_d->cache_stats.hits);
 	printf("    Total Requests = %ld\n",l1_d->cache_stats.requests);
@@ -101,7 +102,7 @@ void output_stats(struct stat_struct *result, struct mem_config *mem, struct cac
 	printf("    Kickouts = %ld; Dirty Kickouts = %ld; Transfers = %ld\n",l1_d->cache_stats.kickouts,l1_d->cache_stats.dirty_kickouts,l1_d->cache_stats.flush_kickouts + l1_d->cache_stats.requests - l1_d->cache_stats.hits );
 	printf("    Flush Kickouts  =  %ld\n", l1_d->cache_stats.flush_kickouts);
 	printf("\n");
-	
+
 	printf("Memory Level: L2\n");
 	printf("    Hit Count = %ld  Miss Count = %ld\n",l2->cache_stats.hits,l2->cache_stats.requests - l2->cache_stats.hits);
 	printf("    Total Requests = %ld\n",l2->cache_stats.requests);
@@ -112,12 +113,11 @@ void output_stats(struct stat_struct *result, struct mem_config *mem, struct cac
 
 	int l1_i_cost = ((l1_i->cache_size * l1_i->block_size * l1_i->assoc) / 4096) * (100 + 100 * log_2(l1_i->assoc));
 	int l1_d_cost = ((l1_d->cache_size * l1_d->block_size * l1_d->assoc) / 4096) * (100 + 100 * log_2(l1_d->assoc));
-	printf("Size of L2: %d\n", (l2->cache_size * l2->block_size * l2->assoc));
 	int l2_cost = (50 * (l2->cache_size * l2->block_size * l2->assoc)) / 65536 + 50 * log_2(l2->assoc);
 	int memcost = log_2(mem->mem_ready / 30) * 200 + log_2(mem->mem_chunktime / 15) * 100 + 75;
 	printf("L1 cache cost (Icache $%d) + (Dcache $%d) = $%d\n", l1_i_cost, l1_d_cost, l1_i_cost+l1_d_cost);
 	printf("L2 cache cost = $%d;   Memory Cost = $%d\n", l2_cost, memcost);
-	/* printf("Total cost = $%d\n", l1_i_cost + l1_d_cost + l2_cost + memcost); */
+	printf("Flushes = %d : Invalidates = %d\n", result->flushes, result->flushes);
 	printf("\n");
 }
 
