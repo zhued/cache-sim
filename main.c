@@ -24,16 +24,18 @@ void process_trace(struct cache *l1i,
 			cost = dispatch_read(l1i, address, bytesize);
 			stats.inst_cycles += cost;
 			stats.insts++;
-			if ((insts % 380000) == 0) {
-				printf("Cache flush\n");
-				stats.flush_time += cache_flush(l1i);
-				stats.flush_time += cache_flush(l1d);
-				stats.flush_time += cache_flush(l2);
+			if (insts > 380000) {
+				insts = 0;
+				int l1d_flush = cache_flush(l1d);
+				int l2_flush = cache_flush(l2);
+				cache_flush(l1i);
+				stats.inst_cycles += l1d_flush + l2_flush;
+				stats.flush_time += l1d_flush + l2_flush;
 				stats.flushes++;
 			}
 			break;
 		case 'W':
-			cost = dispatch_read(l1d, address, bytesize);
+			cost = dispatch_write(l1d, address, bytesize);
 			stats.write_cycles += cost;
 			stats.writes++;
 			break;
