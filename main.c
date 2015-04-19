@@ -144,28 +144,6 @@ int main(int argc, char **argv)
 
 	process_trace(&l1_i, &l1_d, &l2, &mem);
 
-	/* print_cache(&l1_d); */
-
-	/* printf("L1i requests: %ld\n", l1_i.cache_stats.requests); */
-	/* printf("L1i hits: %ld\n", l1_i.cache_stats.hits); */
-	/* printf("L1i misses: %ld\n", l1_i.cache_stats.requests - l1_i.cache_stats.hits); */
-	/* printf("L1i kickout: %ld\n", l1_i.cache_stats.kickouts); */
-	/* printf("L1i dirty kickout: %ld\n", l1_i.cache_stats.dirty_kickouts); */
-	/* printf("L1i flush kickout: %ld\n\n", l1_i.cache_stats.flush_kickouts); */
-
-	/* printf("L1d requests: %ld\n", l1_d.cache_stats.requests); */
-	/* printf("L1d hits: %ld\n", l1_d.cache_stats.hits); */
-	/* printf("L1d misses: %ld\n", l1_d.cache_stats.requests - l1_d.cache_stats.hits); */
-	/* printf("L1d kickout: %ld\n", l1_d.cache_stats.kickouts); */
-	/* printf("L1d dirty kickout: %ld\n", l1_d.cache_stats.dirty_kickouts); */
-	/* printf("L1d flush kickout: %ld\n\n", l1_d.cache_stats.flush_kickouts); */
-
-	/* printf("L2 requests: %ld\n", l2.cache_stats.requests); */
-	/* printf("L2 hits: %ld\n", l2.cache_stats.hits); */
-	/* printf("L2 misses: %ld\n", l2.cache_stats.requests - l2.cache_stats.hits); */
-	/* printf("L2 kickout: %ld\n", l2.cache_stats.kickouts); */
-	/* printf("L2 dirty kickout: %ld\n\n", l2.cache_stats.dirty_kickouts); */
-	
 	output_stats(&stats, &mem, &l1_i, &l1_d, &l2);
 
 	return 0;

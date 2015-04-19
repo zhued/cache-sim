@@ -120,7 +120,6 @@ void init_cache(struct cache *cache)
 		cur->next = NULL;
 		for (int j = 0; j < cache->assoc; j++) {
 			struct block *b = &cache->buf[buf_index(cache, i, j)];
-			/* printf("%#lx\n", b); */
 			b->tag = 0;
 			b->valid = 0;
 			b->dirty = 0;
