@@ -1,6 +1,7 @@
 /* Cache implementation */
 
 #include "cache.h"
+#include "config.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -119,7 +120,6 @@ void init_cache(struct cache *cache)
 		cur->next = NULL;
 		for (int j = 0; j < cache->assoc; j++) {
 			struct block *b = &cache->buf[buf_index(cache, i, j)];
-			/* printf("%#lx\n", b); */
 			b->tag = 0;
 			b->valid = 0;
 			b->dirty = 0;
@@ -128,38 +128,42 @@ void init_cache(struct cache *cache)
 }
 
 
-void dispatch_write(struct cache *cache, unsigned long addr, int bytes)
+int dispatch_write(struct cache *cache, unsigned long addr, int bytes)
 {
 	unsigned long block_index, index, tag;
+	int cost = 0;
 	unsigned long aligned = addr & ~(cache->req_size - 1);
 	decompose_addr(cache, addr, &tag, &index, &block_index);
 
 	bytes -= cache->req_size - (addr - aligned);
-	cache_write(cache, aligned);
+	cost += cache_write(cache, aligned);
 
 	while (bytes > 0) {
 		aligned += cache->req_size;
 		decompose_addr(cache, aligned, &tag, &index, &block_index);
-		cache_write(cache, aligned);
+		cost += cache_write(cache, aligned);
 		bytes -= cache->req_size;
 	}
+	return cost;
 }
 
-void dispatch_read(struct cache *cache, unsigned long addr, int bytes)
+int dispatch_read(struct cache *cache, unsigned long addr, int bytes)
 {
 	unsigned long block_index, index, tag;
+	int cost = 0;
 	unsigned long aligned = addr & ~(cache->req_size-1);
 	decompose_addr(cache, addr, &tag, &index, &block_index);
 
 	bytes -= cache->req_size - (addr - aligned);
-	cache_read(cache, aligned);
+	cost += cache_read(cache, aligned);
 
 	while (bytes > 0) {
 		aligned += cache->req_size;
 		decompose_addr(cache, aligned, &tag, &index, &block_index);
-		cache_read(cache, aligned);
+		cost += cache_read(cache, aligned);
 		bytes -= cache->req_size;
 	}
+	return cost;
 }
 
 int cache_write(struct cache *cache, unsigned long addr)
@@ -192,7 +196,7 @@ int cache_write(struct cache *cache, unsigned long addr)
 	update_lru(cache, index, lru->elem);
 
 	/* Miss */
-	int cumulative_miss_time = cache->miss_time;
+	int cumulative_miss_time = cache->miss_time + cache->hit_time;
 	if (cache->buf[row].valid) {
 		cache->cache_stats.kickouts++;
 		if (cache->buf[row].dirty) {
@@ -206,18 +210,22 @@ int cache_write(struct cache *cache, unsigned long addr)
 							       cache->buf[row].tag,
 							       index,
 							       bi);
-			cumulative_miss_time+=cache_write(cache->backend, writeaddr);
-			cache->cache_stats.transfers++;
+			cumulative_miss_time += cache_write(cache->backend, writeaddr);
+			cumulative_miss_time += cache->transfer_time * (cache->block_size / cache->bus_width);
 		} else {
 			/* Go to memory */
+			cumulative_miss_time += mem.mem_sendaddr + mem.mem_ready +
+				(mem.mem_chunktime * cache->block_size / mem.mem_chunksize);
 		}
 	}
 
 	if (cache->backend) {
-		cache->cache_stats.transfers++;
 		cumulative_miss_time+=cache_read(cache->backend, addr);
+		cumulative_miss_time += cache->transfer_time * (cache->block_size / cache->bus_width);
 	} else {
 		/* Go to memory */
+		cumulative_miss_time += mem.mem_sendaddr + mem.mem_ready +
+			(mem.mem_chunktime * cache->block_size / mem.mem_chunksize);
 	}
 
 	cache->buf[row].tag = tag;
@@ -247,7 +255,7 @@ int cache_read(struct cache *cache, unsigned long addr)
 		}
 	}
 	/* Miss */
-	int cumulative_miss_time = cache->miss_time;
+	int cumulative_miss_time = cache->miss_time + cache->hit_time;
 	struct lru *lru = cache->lrus[index];
 
 	while (lru->next) {
@@ -271,17 +279,22 @@ int cache_read(struct cache *cache, unsigned long addr)
 							       index,
 							       bi);
 			cumulative_miss_time += cache_write(cache->backend, writeaddr);
-			cache->cache_stats.transfers++;
+			cumulative_miss_time += cache->transfer_time *
+				(cache->block_size / cache->bus_width);
 		} else {
 			/* Go to memory */
+			cumulative_miss_time += mem.mem_sendaddr + mem.mem_ready +
+				(mem.mem_chunktime * cache->block_size / mem.mem_chunksize);
 		}
 	}
 
 	if (cache->backend) {
-		cache->cache_stats.transfers++;
 		cumulative_miss_time += cache_read(cache->backend, addr);
+		cumulative_miss_time += cache->transfer_time * (cache->block_size / cache->bus_width);
 	} else {
 		/* Go to memory */
+		cumulative_miss_time += mem.mem_sendaddr + mem.mem_ready +
+			(mem.mem_chunktime * cache->block_size / mem.mem_chunksize);
 	}
 
 	cache->buf[row].tag = tag;
@@ -291,20 +304,28 @@ int cache_read(struct cache *cache, unsigned long addr)
 	return cumulative_miss_time;
 }
 
-void cache_flush(struct cache *cache) {
+unsigned long cache_flush(struct cache *cache) {
+	unsigned long cost = 0;
 	for (unsigned long i = 0; i < cache->cache_size; i++) {
 		for (int j = 0; j < cache->assoc; j++) {
 			struct block *b = &cache->buf[buf_index(cache, i, j)];
 			if (b->dirty) {
 				if (cache->backend) {
 					int writeaddr = compose_addr(cache, b->tag, i, 0);
-					cache_write(cache->backend, writeaddr);
+					cost += cache_write(cache->backend, writeaddr);
+					cost += cache->transfer_time *
+						(cache->block_size / cache->bus_width);
+				} else {
+					cost += mem.mem_sendaddr + mem.mem_ready +
+						(mem.mem_chunktime *
+						 cache->block_size / mem.mem_chunksize);
 				}
 				cache->cache_stats.flush_kickouts++;
 			}
 			b->valid = 0;
 		}
 	}
+	return cost;
 }
 
 void print_cache(struct cache *cache)
