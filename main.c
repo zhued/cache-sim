@@ -81,7 +81,7 @@ void output_stats(struct stat_struct *result, struct mem_config *mem, struct cac
 	printf("\n");
 
 	printf("Average cycles for activiites: [Percentage]\n");
-	printf("  Read =  %.1f; Write =  %.1f; Inst. =  %.1f\n",((double)result->read_cycles)/(result->reads),((double)result->write_cycles)/(result->writes),((double)result->inst_cycles)/(result->insts));
+	printf("  Read =  %.1f; Write =  %.1f; Inst. =  %.1f\n",((double)result->read_cycles)/(result->reads),((double)result->write_cycles)/(result->writes),((double)extime)/(result->insts));
 	printf("Ideal: Exec. Time = %ld; CPI =  %.1f\n",result->reads + result->writes + 2*result->insts,((double)result->reads+result->writes+2*result->insts)/(result->insts));
 	unsigned long misaligned_exec = result->insts + l1_i->cache_stats.requests + l1_d->cache_stats.requests;
 	printf("Ideal mis-aligned: Exec. Time = %ld; CPI = %.1f\n", misaligned_exec, ((double)misaligned_exec / result->insts));
