@@ -49,9 +49,6 @@ void process_trace(struct cache *l1i,
 
 void output_stats(struct stat_struct *result, struct mem_config *mem, struct cache *l1_i, struct cache *l1_d, struct cache *l2)
 {
-	printf("------------------------------------------------------------\n");
-	printf("		<trace>.<config>		Simulation Results          \n");
-	printf("------------------------------------------------------------\n");
 	printf("\n");
 	printf("Memory System:\n");
 	printf("    Dcache Size = %d : ways = %d : block size = %d\n", l1_d->cache_size * l1_d->block_size, l1_d->assoc,l1_d->block_size);
@@ -113,10 +110,10 @@ void output_stats(struct stat_struct *result, struct mem_config *mem, struct cac
 
 	int l1_i_cost = ((l1_i->cache_size * l1_i->block_size * l1_i->assoc) / 4096) * (100 + 100 * log_2(l1_i->assoc));
 	int l1_d_cost = ((l1_d->cache_size * l1_d->block_size * l1_d->assoc) / 4096) * (100 + 100 * log_2(l1_d->assoc));
-	int l2_cost = (50 * (l2->cache_size * l2->block_size * l2->assoc)) / 65536 + 50 * log_2(l2->assoc);
-	int memcost = log_2(mem->mem_ready / 30) * 200 + log_2(mem->mem_chunktime / 15) * 100 + 75;
+	int l2_cost = ((l2->cache_size * l2->block_size * l2->assoc) / 32768) * (50 + 50 * log_2(l2->assoc));
+	int memcost = log_2(mem->mem_ready / 30) * 200 + log_2(mem->mem_chunksize / 8) * 100 + 75;
 	printf("L1 cache cost (Icache $%d) + (Dcache $%d) = $%d\n", l1_i_cost, l1_d_cost, l1_i_cost+l1_d_cost);
-	printf("L2 cache cost = $%d;   Memory Cost = $%d\n", l2_cost, memcost);
+	printf("L2 cache cost = $%d;   Memory Cost = $%d   Total Cost = $%d\n", l2_cost, memcost, memcost + l2_cost + l1_i_cost + l1_d_cost);
 	printf("Flushes = %d : Invalidates = %d\n", result->flushes, result->flushes);
 	printf("\n");
 }
