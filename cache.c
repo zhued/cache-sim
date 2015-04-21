@@ -82,12 +82,9 @@ static void decompose_addr(struct cache* cache,
 			   unsigned long *index,
 			   unsigned long *bi)
 {
-	unsigned long block_bits = log_2(cache->block_size);
-	unsigned long block_index_bits = log_2(cache->block_size * cache->cache_size);
-
 	*bi = addr & (cache->block_size - 1);
-	*index = (addr >> block_bits) & (cache->cache_size - 1);
-	*tag = (addr >> block_index_bits);
+	*index = (addr >> cache->block_bits) & (cache->cache_size - 1);
+	*tag = (addr >> cache->block_index_bits);
 }
 
 static unsigned long compose_addr(struct cache* cache,
@@ -95,16 +92,15 @@ static unsigned long compose_addr(struct cache* cache,
 				  unsigned long index,
 				  unsigned long bi)
 {
-	unsigned long block_bits = log_2(cache->block_size);
-	unsigned long block_index_bits = log_2(cache->block_size * cache->cache_size);
-
-	return (tag << block_index_bits) | (index << block_bits);
+	return (tag << cache->block_index_bits) | (index << cache->block_bits);
 }
 
 void init_cache(struct cache *cache)
 {
 	cache->cache_size /= cache->block_size;
 	cache->cache_size /= cache->assoc;
+	cache->block_bits = log_2(cache->block_size);
+	cache->block_index_bits = log_2(cache->block_size * cache->cache_size);
 	cache->buf = malloc(cache->cache_size * cache->assoc * sizeof(struct block));
 	cache->lrus = malloc(cache->cache_size * sizeof(struct lru*));
 

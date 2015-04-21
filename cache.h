@@ -24,6 +24,8 @@ struct cache {
 	int req_size;
 	int transfer_time;
 	int bus_width;
+	int block_bits;
+	int block_index_bits;
 	struct {
 		unsigned long requests;
 		unsigned long hits;
