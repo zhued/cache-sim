@@ -24,8 +24,7 @@ void process_trace(struct cache *l1i,
 			cost = dispatch_read(l1i, address, bytesize);
 			stats.inst_cycles += cost;
 			stats.insts++;
-			if (insts > 380000) {
-				insts = 0;
+			if ((insts % 380000) == 0) {
 				int l1d_flush = cache_flush(l1d);
 				int l2_flush = cache_flush(l2);
 				cache_flush(l1i);
@@ -77,7 +76,7 @@ void output_stats(struct stat_struct *result, struct mem_config *mem, struct cac
 	printf("    Total  =     %ld\n",extime);
 	printf("\n");
 
-	printf("Average cycles for activiites: [Percentage]\n");
+	printf("Average cycles for activites:\n");
 	printf("  Read =  %.1f; Write =  %.1f; Inst. =  %.1f\n",((double)result->read_cycles)/(result->reads),((double)result->write_cycles)/(result->writes),((double)extime)/(result->insts));
 	printf("Ideal: Exec. Time = %ld; CPI =  %.1f\n",result->reads + result->writes + 2*result->insts,((double)result->reads+result->writes+2*result->insts)/(result->insts));
 	unsigned long misaligned_exec = result->insts + l1_i->cache_stats.requests + l1_d->cache_stats.requests;
