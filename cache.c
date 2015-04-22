@@ -77,20 +77,20 @@ static void update_lru(struct cache *cache, int index, int way)
 }
 
 static void decompose_addr(struct cache* cache,
-			   unsigned long addr,
-			   unsigned long *tag,
-			   unsigned long *index,
-			   unsigned long *bi)
+			   unsigned long long addr,
+			   unsigned long long *tag,
+			   unsigned long long *index,
+			   unsigned long long *bi)
 {
 	*bi = addr & (cache->block_size - 1);
 	*index = (addr >> cache->block_bits) & (cache->cache_size - 1);
 	*tag = (addr >> cache->block_index_bits);
 }
 
-static unsigned long compose_addr(struct cache* cache,
-				  unsigned long tag,
-				  unsigned long index,
-				  unsigned long bi)
+static unsigned long long compose_addr(struct cache* cache,
+				       unsigned long long tag,
+				       unsigned long long index,
+				       unsigned long long bi)
 {
 	return (tag << cache->block_index_bits) | (index << cache->block_bits);
 }
@@ -124,11 +124,11 @@ void init_cache(struct cache *cache)
 }
 
 
-int dispatch_write(struct cache *cache, unsigned long addr, int bytes)
+int dispatch_write(struct cache *cache, unsigned long long addr, int bytes)
 {
-	unsigned long block_index, index, tag;
+	unsigned long long block_index, index, tag;
 	int cost = 0;
-	unsigned long aligned = addr & ~(cache->req_size - 1);
+	unsigned long long aligned = addr & ~(cache->req_size - 1);
 	decompose_addr(cache, addr, &tag, &index, &block_index);
 
 	bytes -= cache->req_size - (addr - aligned);
@@ -143,11 +143,11 @@ int dispatch_write(struct cache *cache, unsigned long addr, int bytes)
 	return cost;
 }
 
-int dispatch_read(struct cache *cache, unsigned long addr, int bytes)
+int dispatch_read(struct cache *cache, unsigned long long addr, int bytes)
 {
-	unsigned long block_index, index, tag;
+	unsigned long long block_index, index, tag;
 	int cost = 0;
-	unsigned long aligned = addr & ~(cache->req_size-1);
+	unsigned long long aligned = addr & ~(cache->req_size-1);
 	decompose_addr(cache, addr, &tag, &index, &block_index);
 
 	bytes -= cache->req_size - (addr - aligned);
@@ -162,9 +162,9 @@ int dispatch_read(struct cache *cache, unsigned long addr, int bytes)
 	return cost;
 }
 
-int cache_write(struct cache *cache, unsigned long addr)
+int cache_write(struct cache *cache, unsigned long long addr)
 {
-	unsigned long index, tag, bi;
+	unsigned long long index, tag, bi;
 	decompose_addr(cache, addr, &tag, &index, &bi);
 
 	int row = index * cache->assoc;
@@ -202,10 +202,10 @@ int cache_write(struct cache *cache, unsigned long addr)
 
 	if (cache->buf[row].dirty && cache->buf[row].valid) {
 		if (cache->backend) {
-			unsigned long writeaddr = compose_addr(cache,
-							       cache->buf[row].tag,
-							       index,
-							       bi);
+			unsigned long long writeaddr = compose_addr(cache,
+								    cache->buf[row].tag,
+								    index,
+								    bi);
 			cumulative_miss_time += cache_write(cache->backend, writeaddr);
 			cumulative_miss_time += cache->transfer_time * (cache->block_size / cache->bus_width);
 		} else {
@@ -231,9 +231,9 @@ int cache_write(struct cache *cache, unsigned long addr)
 	return cumulative_miss_time;
 }
 
-int cache_read(struct cache *cache, unsigned long addr)
+int cache_read(struct cache *cache, unsigned long long addr)
 {
-	unsigned long index, tag, bi;
+	unsigned long long index, tag, bi;
 	decompose_addr(cache, addr, &tag, &index, &bi);
 
 	cache->cache_stats.requests++;
@@ -270,7 +270,7 @@ int cache_read(struct cache *cache, unsigned long addr)
 
 	if (cache->buf[row].dirty && cache->buf[row].valid) {
 		if (cache->backend) {
-			unsigned long writeaddr = compose_addr(cache,
+			unsigned long long writeaddr = compose_addr(cache,
 							       cache->buf[row].tag,
 							       index,
 							       bi);
@@ -300,14 +300,14 @@ int cache_read(struct cache *cache, unsigned long addr)
 	return cumulative_miss_time;
 }
 
-unsigned long cache_flush(struct cache *cache) {
-	unsigned long cost = 0;
-	for (unsigned long i = 0; i < cache->cache_size; i++) {
+unsigned long long cache_flush(struct cache *cache) {
+	unsigned long long cost = 0;
+	for (unsigned long long i = 0; i < cache->cache_size; i++) {
 		for (int j = 0; j < cache->assoc; j++) {
 			struct block *b = &cache->buf[buf_index(cache, i, j)];
 			if (b->dirty) {
 				if (cache->backend) {
-					unsigned long writeaddr = compose_addr(cache, b->tag, i, 0);
+					unsigned long long writeaddr = compose_addr(cache, b->tag, i, 0);
 					cost += cache_write(cache->backend, writeaddr);
 					cost += cache->transfer_time *
 						(cache->block_size / cache->bus_width);
@@ -326,11 +326,11 @@ unsigned long cache_flush(struct cache *cache) {
 
 void print_cache(struct cache *cache)
 {
-	for (unsigned long i = 0; i < cache->cache_size; i++) {
+	for (unsigned long long i = 0; i < cache->cache_size; i++) {
 		for (int j = 0; j < cache->assoc; j++) {
 			struct block *b = &cache->buf[buf_index(cache, i, j)];
 			if (b->valid) {
-				printf("Index: %#lx | V:%d D: %d Tag: %#lx\n",
+				printf("Index: %#llx | V:%d D: %d Tag: %#llx\n",
 				       i, b->valid, b->dirty, b->tag);
 			}
 		}
