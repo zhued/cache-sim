@@ -1,6 +1,7 @@
 #!/bin/bash
 
-TRACES="trace/traces-1M/*.gz"
+TRACES="traces/traces-long/*.gz"
+CONFIG=$1
 
 [[ -d "output" ]] || mkdir output
 
@@ -13,9 +14,9 @@ for trace in $TRACES; do
     fi
     echo "Beginning " $tracename " in " $configname
     outfile="output/${tracename/.gz}-${configname/.txt}.out"
-    echo "--------------------------------------------------------------------------------" >> $outfile
+    echo "----------------------------------------------------------------------" >> $outfile
     printf "		%s.%s		Simulation Results          \n" ${tracename/.gz} ${configname/.txt} >> $outfile
-    echo "--------------------------------------------------------------------------------" >> $outfile
-    zcat < $trace | ./cache-sim $config >> $outfile
+    echo "----------------------------------------------------------------------" >> $outfile
+    zcat < $trace | ./cache-sim $CONFIG >> $outfile
     echo "Finished " $tracename " in " $configname
 done
