@@ -307,7 +307,7 @@ unsigned long cache_flush(struct cache *cache) {
 			struct block *b = &cache->buf[buf_index(cache, i, j)];
 			if (b->dirty) {
 				if (cache->backend) {
-					int writeaddr = compose_addr(cache, b->tag, i, 0);
+					unsigned long writeaddr = compose_addr(cache, b->tag, i, 0);
 					cost += cache_write(cache->backend, writeaddr);
 					cost += cache->transfer_time *
 						(cache->block_size / cache->bus_width);
