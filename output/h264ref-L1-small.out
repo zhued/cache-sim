@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		h264ref.L1-small		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 4096 : ways = 1 : block size = 32
+    Icache Size = 4096 : ways = 1 : block size = 32
+    L2-cache Size = 32768 : ways = 1 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 38317937080; Total References = 10000000106
+Flush Time = 467519087
+Inst refs = 6730089151; Data refs = 3269910955
+
+Number of references types: [Percentage]
+    Reads  =     2689845793    [26.9%]
+    Writes =     580065162    [5.8%]
+    Inst.  =     6730089151    [67.3%]
+    Total  =     10000000106
+
+Total cycles for activities: [Percentage]
+    Reads  =     16703397888    [43.6%]
+    Writes =     4433243116    [11.6%]
+    Inst.  =     17181296076    [44.8%]
+    Total  =     38317937080
+
+Average cycles for activites:
+  Read =  6.2; Write =  7.6; Inst. =  5.7
+Ideal: Exec. Time = 16730089257; CPI =  2.5
+Ideal mis-aligned: Exec. Time = 21962901365; CPI = 3.3
+
+Memory Level: L1i
+    Hit Count = 11122010646  Miss Count = 86066242
+    Total Requests = 11208076888
+    Hit Rate = 99.2%   Miss Rate = 0.8%
+    Kickouts = 84402310; Dirty Kickouts = 0; Transfers = 86066242
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 3767873369  Miss Count = 256861957
+    Total Requests = 4024735326
+    Hit Rate = 93.6%   Miss Rate = 6.4%
+    Kickouts = 254596737; Dirty Kickouts = 65962984; Transfers = 257515611
+    Flush Kickouts  =  653654
+
+Memory Level: L2
+    Hit Count = 327114101  Miss Count = 82430736
+    Total Requests = 409544837
+    Hit Rate = 79.9%   Miss Rate = 20.1%
+    Kickouts = 74863250; Dirty Kickouts = 14915693; Transfers = 85221863
+    Flush Kickouts  =  2791127
+
+L1 cache cost (Icache $100) + (Dcache $100) = $200
+L2 cache cost = $50;   Memory Cost = $75   Total Cost = $325
+Flushes = 17710 : Invalidates = 17710
+

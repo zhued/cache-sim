@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		sjeng.L1-8way		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 1024 : ways = 8 : block size = 32
+    Icache Size = 1024 : ways = 8 : block size = 32
+    L2-cache Size = 32768 : ways = 1 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 43670677136; Total References = 10000000109
+Flush Time = 781207070
+Inst refs = 7364538494; Data refs = 2635461615
+
+Number of references types: [Percentage]
+    Reads  =     1907768017    [19.1%]
+    Writes =     727693598    [7.3%]
+    Inst.  =     7364538494    [73.6%]
+    Total  =     10000000109
+
+Total cycles for activities: [Percentage]
+    Reads  =     9991306839    [22.9%]
+    Writes =     6342049093    [14.5%]
+    Inst.  =     27337321204    [62.6%]
+    Total  =     43670677136
+
+Average cycles for activites:
+  Read =  5.2; Write =  8.7; Inst. =  5.9
+Ideal: Exec. Time = 17364538603; CPI =  2.4
+Ideal mis-aligned: Exec. Time = 23214492795; CPI = 3.2
+
+Memory Level: L1i
+    Hit Count = 12325674941  Miss Count = 226700851
+    Total Requests = 12552375792
+    Hit Rate = 98.2%   Miss Rate = 1.8%
+    Kickouts = 221765528; Dirty Kickouts = 0; Transfers = 226700851
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 3215035005  Miss Count = 82543504
+    Total Requests = 3297578509
+    Hit Rate = 97.5%   Miss Rate = 2.5%
+    Kickouts = 77582058; Dirty Kickouts = 38144847; Transfers = 85027308
+    Flush Kickouts  =  2483804
+
+Memory Level: L2
+    Hit Count = 239720796  Miss Count = 110152210
+    Total Requests = 349873006
+    Hit Rate = 68.5%   Miss Rate = 31.5%
+    Kickouts = 101402078; Dirty Kickouts = 20836190; Transfers = 113490797
+    Flush Kickouts  =  3338587
+
+L1 cache cost (Icache $800) + (Dcache $800) = $1600
+L2 cache cost = $50;   Memory Cost = $75   Total Cost = $1725
+Flushes = 19380 : Invalidates = 19380
+

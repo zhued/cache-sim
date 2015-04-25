@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		bzip2.All-4way		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 2048 : ways = 4 : block size = 32
+    Icache Size = 2048 : ways = 4 : block size = 32
+    L2-cache Size = 8192 : ways = 4 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 51496636099; Total References = 10000000073
+Flush Time = 421862981
+Inst refs = 7565217787; Data refs = 2434782286
+
+Number of references types: [Percentage]
+    Reads  =     1882275327    [18.8%]
+    Writes =     552506959    [5.5%]
+    Inst.  =     7565217787    [75.7%]
+    Total  =     10000000073
+
+Total cycles for activities: [Percentage]
+    Reads  =     19734976073    [38.3%]
+    Writes =     19180835430    [37.2%]
+    Inst.  =     12580824596    [24.4%]
+    Total  =     51496636099
+
+Average cycles for activites:
+  Read =  10.5; Write =  34.7; Inst. =  6.8
+Ideal: Exec. Time = 17565217860; CPI =  2.3
+Ideal mis-aligned: Exec. Time = 22199500705; CPI = 2.9
+
+Memory Level: L1i
+    Hit Count = 12095527306  Miss Count = 555216
+    Total Requests = 12096082522
+    Hit Rate = 100.0%   Miss Rate = 0.0%
+    Kickouts = 1778; Dirty Kickouts = 0; Transfers = 555216
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 2380037622  Miss Count = 158162774
+    Total Requests = 2538200396
+    Hit Rate = 93.8%   Miss Rate = 6.2%
+    Kickouts = 153066463; Dirty Kickouts = 61597513; Transfers = 159395257
+    Flush Kickouts  =  1232483
+
+Memory Level: L2
+    Hit Count = 75870403  Miss Count = 145677583
+    Total Requests = 221547986
+    Hit Rate = 34.2%   Miss Rate = 65.8%
+    Kickouts = 135799719; Dirty Kickouts = 54270414; Transfers = 147983788
+    Flush Kickouts  =  2306205
+
+L1 cache cost (Icache $600) + (Dcache $600) = $1200
+L2 cache cost = $150;   Memory Cost = $75   Total Cost = $1425
+Flushes = 19908 : Invalidates = 19908
+

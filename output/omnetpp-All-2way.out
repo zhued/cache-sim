@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		omnetpp.All-2way		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 4096 : ways = 2 : block size = 32
+    Icache Size = 4096 : ways = 2 : block size = 32
+    L2-cache Size = 16384 : ways = 2 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 81373982925; Total References = 10000000076
+Flush Time = 655892661
+Inst refs = 6748671723; Data refs = 3251328353
+
+Number of references types: [Percentage]
+    Reads  =     2011922989    [20.1%]
+    Writes =     1239405364    [12.4%]
+    Inst.  =     6748671723    [67.5%]
+    Total  =     10000000076
+
+Total cycles for activities: [Percentage]
+    Reads  =     36766994360    [45.2%]
+    Writes =     8301079521    [10.2%]
+    Inst.  =     36305909044    [44.6%]
+    Total  =     81373982925
+
+Average cycles for activites:
+  Read =  18.3; Write =  6.7; Inst. =  12.1
+Ideal: Exec. Time = 16748671799; CPI =  2.5
+Ideal mis-aligned: Exec. Time = 24145770580; CPI = 3.6
+
+Memory Level: L1i
+    Hit Count = 11118333347  Miss Count = 341151726
+    Total Requests = 11459485073
+    Hit Rate = 97.0%   Miss Rate = 3.0%
+    Kickouts = 336631094; Dirty Kickouts = 0; Transfers = 341151726
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 5675568402  Miss Count = 262045382
+    Total Requests = 5937613784
+    Hit Rate = 95.6%   Miss Rate = 4.4%
+    Kickouts = 257498822; Dirty Kickouts = 104790863; Transfers = 264066286
+    Flush Kickouts  =  2020904
+
+Memory Level: L2
+    Hit Count = 453912430  Miss Count = 256096445
+    Total Requests = 710008875
+    Hit Rate = 63.9%   Miss Rate = 36.1%
+    Kickouts = 247005885; Dirty Kickouts = 58841113; Transfers = 259476879
+    Flush Kickouts  =  3380434
+
+L1 cache cost (Icache $400) + (Dcache $400) = $800
+L2 cache cost = $100;   Memory Cost = $75   Total Cost = $975
+Flushes = 17759 : Invalidates = 17759
+

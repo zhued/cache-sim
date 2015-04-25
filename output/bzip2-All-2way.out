@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		bzip2.All-2way		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 4096 : ways = 2 : block size = 32
+    Icache Size = 4096 : ways = 2 : block size = 32
+    L2-cache Size = 16384 : ways = 2 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 51819782329; Total References = 10000000073
+Flush Time = 433215242
+Inst refs = 7565217787; Data refs = 2434782286
+
+Number of references types: [Percentage]
+    Reads  =     1882275327    [18.8%]
+    Writes =     552506959    [5.5%]
+    Inst.  =     7565217787    [75.7%]
+    Total  =     10000000073
+
+Total cycles for activities: [Percentage]
+    Reads  =     20125897745    [38.8%]
+    Writes =     19101145576    [36.9%]
+    Inst.  =     12592739008    [24.3%]
+    Total  =     51819782329
+
+Average cycles for activites:
+  Read =  10.7; Write =  34.6; Inst. =  6.8
+Ideal: Exec. Time = 17565217860; CPI =  2.3
+Ideal mis-aligned: Exec. Time = 22199500705; CPI = 2.9
+
+Memory Level: L1i
+    Hit Count = 12095527121  Miss Count = 555401
+    Total Requests = 12096082522
+    Hit Rate = 100.0%   Miss Rate = 0.0%
+    Kickouts = 2674; Dirty Kickouts = 0; Transfers = 555401
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 2378127911  Miss Count = 160072485
+    Total Requests = 2538200396
+    Hit Rate = 93.7%   Miss Rate = 6.3%
+    Kickouts = 154979866; Dirty Kickouts = 62473522; Transfers = 161310502
+    Flush Kickouts  =  1238017
+
+Memory Level: L2
+    Hit Count = 77722855  Miss Count = 146616570
+    Total Requests = 224339425
+    Hit Rate = 34.6%   Miss Rate = 65.4%
+    Kickouts = 136811918; Dirty Kickouts = 55034587; Transfers = 148924564
+    Flush Kickouts  =  2307994
+
+L1 cache cost (Icache $400) + (Dcache $400) = $800
+L2 cache cost = $100;   Memory Cost = $75   Total Cost = $975
+Flushes = 19908 : Invalidates = 19908
+

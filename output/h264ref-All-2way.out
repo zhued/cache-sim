@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		h264ref.All-2way		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 4096 : ways = 2 : block size = 32
+    Icache Size = 4096 : ways = 2 : block size = 32
+    L2-cache Size = 16384 : ways = 2 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 26737444589; Total References = 10000000106
+Flush Time = 546702272
+Inst refs = 6730089151; Data refs = 3269910955
+
+Number of references types: [Percentage]
+    Reads  =     2689845793    [26.9%]
+    Writes =     580065162    [5.8%]
+    Inst.  =     6730089151    [67.3%]
+    Total  =     10000000106
+
+Total cycles for activities: [Percentage]
+    Reads  =     9273316723    [34.7%]
+    Writes =     2620034214    [9.8%]
+    Inst.  =     14844093652    [55.5%]
+    Total  =     26737444589
+
+Average cycles for activites:
+  Read =  3.4; Write =  4.5; Inst. =  4.0
+Ideal: Exec. Time = 16730089257; CPI =  2.5
+Ideal mis-aligned: Exec. Time = 21962901365; CPI = 3.3
+
+Memory Level: L1i
+    Hit Count = 11160285566  Miss Count = 47791322
+    Total Requests = 11208076888
+    Hit Rate = 99.6%   Miss Rate = 0.4%
+    Kickouts = 44719492; Dirty Kickouts = 0; Transfers = 47791322
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 3940990857  Miss Count = 83744469
+    Total Requests = 4024735326
+    Hit Rate = 97.9%   Miss Rate = 2.1%
+    Kickouts = 79223864; Dirty Kickouts = 20672723; Transfers = 85245282
+    Flush Kickouts  =  1500813
+
+Memory Level: L2
+    Hit Count = 108534830  Miss Count = 45174497
+    Total Requests = 153709327
+    Hit Rate = 70.6%   Miss Rate = 29.4%
+    Kickouts = 37064087; Dirty Kickouts = 6420161; Transfers = 48275059
+    Flush Kickouts  =  3100562
+
+L1 cache cost (Icache $400) + (Dcache $400) = $800
+L2 cache cost = $100;   Memory Cost = $75   Total Cost = $975
+Flushes = 17710 : Invalidates = 17710
+

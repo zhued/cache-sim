@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		h264ref.L1-2way		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 4096 : ways = 2 : block size = 32
+    Icache Size = 4096 : ways = 2 : block size = 32
+    L2-cache Size = 32768 : ways = 1 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 28855988887; Total References = 10000000106
+Flush Time = 564519847
+Inst refs = 6730089151; Data refs = 3269910955
+
+Number of references types: [Percentage]
+    Reads  =     2689845793    [26.9%]
+    Writes =     580065162    [5.8%]
+    Inst.  =     6730089151    [67.3%]
+    Total  =     10000000106
+
+Total cycles for activities: [Percentage]
+    Reads  =     10406613203    [36.1%]
+    Writes =     3080549312    [10.7%]
+    Inst.  =     15368826372    [53.3%]
+    Total  =     28855988887
+
+Average cycles for activites:
+  Read =  3.9; Write =  5.3; Inst. =  4.3
+Ideal: Exec. Time = 16730089257; CPI =  2.5
+Ideal mis-aligned: Exec. Time = 21962901365; CPI = 3.3
+
+Memory Level: L1i
+    Hit Count = 11160285566  Miss Count = 47791322
+    Total Requests = 11208076888
+    Hit Rate = 99.6%   Miss Rate = 0.4%
+    Kickouts = 44719492; Dirty Kickouts = 0; Transfers = 47791322
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 3940990857  Miss Count = 83744469
+    Total Requests = 4024735326
+    Hit Rate = 97.9%   Miss Rate = 2.1%
+    Kickouts = 79223864; Dirty Kickouts = 20672723; Transfers = 85245282
+    Flush Kickouts  =  1500813
+
+Memory Level: L2
+    Hit Count = 98287016  Miss Count = 55422311
+    Total Requests = 153709327
+    Hit Rate = 63.9%   Miss Rate = 36.1%
+    Kickouts = 47854037; Dirty Kickouts = 9015757; Transfers = 58472023
+    Flush Kickouts  =  3049712
+
+L1 cache cost (Icache $400) + (Dcache $400) = $800
+L2 cache cost = $50;   Memory Cost = $75   Total Cost = $925
+Flushes = 17710 : Invalidates = 17710
+

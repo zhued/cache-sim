@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		libquantum.All-2way		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 4096 : ways = 2 : block size = 32
+    Icache Size = 4096 : ways = 2 : block size = 32
+    L2-cache Size = 16384 : ways = 2 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 105996884457; Total References = 16506492546
+Flush Time = 1270469867
+Inst refs = 12487578510; Data refs = 4018914036
+
+Number of references types: [Percentage]
+    Reads  =     3526260463    [21.4%]
+    Writes =     492653573    [3.0%]
+    Inst.  =     12487578510    [75.7%]
+    Total  =     16506492546
+
+Total cycles for activities: [Percentage]
+    Reads  =     86764716181    [81.9%]
+    Writes =     1197968976    [1.1%]
+    Inst.  =     18034199300    [17.0%]
+    Total  =     105996884457
+
+Average cycles for activites:
+  Read =  24.6; Write =  2.4; Inst. =  8.5
+Ideal: Exec. Time = 28994071056; CPI =  2.3
+Ideal mis-aligned: Exec. Time = 35948584560; CPI = 2.9
+
+Memory Level: L1i
+    Hit Count = 16620543263  Miss Count = 845790
+    Total Requests = 16621389053
+    Hit Rate = 100.0%   Miss Rate = 0.0%
+    Kickouts = 4867; Dirty Kickouts = 0; Transfers = 845790
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 6262666441  Miss Count = 576950556
+    Total Requests = 6839616997
+    Hit Rate = 91.6%   Miss Rate = 8.4%
+    Kickouts = 568537628; Dirty Kickouts = 234411130; Transfers = 580300116
+    Flush Kickouts  =  3349560
+
+Memory Level: L2
+    Hit Count = 526028653  Miss Count = 289528383
+    Total Requests = 815557036
+    Hit Rate = 64.5%   Miss Rate = 35.5%
+    Kickouts = 272742875; Dirty Kickouts = 125971716; Transfers = 297140958
+    Flush Kickouts  =  7612575
+
+L1 cache cost (Icache $400) + (Dcache $400) = $800
+L2 cache cost = $100;   Memory Cost = $75   Total Cost = $975
+Flushes = 32862 : Invalidates = 32862
+

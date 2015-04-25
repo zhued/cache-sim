@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+        h264ref.All-FA       Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 32 : ways = 256 : block size = 32
+    Icache Size = 32 : ways = 256 : block size = 32
+    L2-cache Size = 64 : ways = 512 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 23773292479; Total References = 10000000106
+Flush Time = 523542340
+Inst refs = 6730089151; Data refs = 3269910955
+
+Number of references types: [Percentage]
+    Reads  =     2689845793    [26.9%]
+    Writes =     580065162    [5.8%]
+    Inst.  =     6730089151    [67.3%]
+    Total  =     10000000106
+
+Total cycles for activities: [Percentage]
+    Reads  =     7719133381    [32.5%]
+    Writes =     2287924120    [9.6%]
+    Inst.  =     13766234978    [57.9%]
+    Total  =     23773292479
+
+Average cycles for activites:
+  Read =  2.9; Write =  3.9; Inst. =  3.5
+Ideal: Exec. Time = 16730089257; CPI =  2.5
+Ideal mis-aligned: Exec. Time = 21962901365; CPI = 3.3
+
+Memory Level: L1i
+    Hit Count = 11151277315  Miss Count = 56799573
+    Total Requests = 11208076888
+    Hit Rate = 99.5%   Miss Rate = 0.5%
+    Kickouts = 53642588; Dirty Kickouts = 0; Transfers = 56799573
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 3968992020  Miss Count = 55743306
+    Total Requests = 4024735326
+    Hit Rate = 98.6%   Miss Rate = 1.4%
+    Kickouts = 51209295; Dirty Kickouts = 13315680; Transfers = 57201076
+    Flush Kickouts  =  1457770
+
+Memory Level: L2
+    Hit Count = 95100196  Miss Count = 32216133
+    Total Requests = 127316329
+    Hit Rate = 74.7%   Miss Rate = 25.3%
+    Kickouts = 23685824; Dirty Kickouts = 4087901; Transfers = 35241346
+    Flush Kickouts  =  3025213
+
+L1 cache cost (Icache $1800) + (Dcache $1800) = $3600
+L2 cache cost = $500;   Memory Cost = $75   Total Cost = $4175
+Flushes = 17710 : Invalidates = 17710
+
