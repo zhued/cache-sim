@@ -50,9 +50,9 @@ void output_stats(struct stat_struct *result, struct mem_config *mem, struct cac
 {
 	printf("\n");
 	printf("Memory System:\n");
-	printf("    Dcache Size = %d : ways = %d : block size = %d\n", l1_d->cache_size * l1_d->block_size, l1_d->assoc,l1_d->block_size);
-	printf("    Icache Size = %d : ways = %d : block size = %d\n", l1_i->cache_size * l1_i->block_size, l1_i->assoc,l1_i->block_size);
-	printf("    L2-cache Size = %d : ways = %d : block size = %d\n", l2->cache_size * l2->block_size, l2->assoc,l2->block_size);
+	printf("    Dcache Size = %d : ways = %d : block size = %d\n", l1_d->cache_size * l1_d->block_size * l1_d->assoc, l1_d->assoc,l1_d->block_size);
+	printf("    Icache Size = %d : ways = %d : block size = %d\n", l1_i->cache_size * l1_i->block_size * l1_i->assoc, l1_i->assoc,l1_i->block_size);
+	printf("    L2-cache Size = %d : ways = %d : block size = %d\n", l2->cache_size * l2->block_size * l2->assoc, l2->assoc,l2->block_size);
 	printf("    Memory ready time = %d : chunksize = %d : chunktime = %d\n", mem->mem_ready, mem->mem_chunksize, mem->mem_chunktime);
 	printf("\n");
 
