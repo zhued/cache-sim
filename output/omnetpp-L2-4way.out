@@ -3,9 +3,9 @@
 ----------------------------------------------------------------------
 
 Memory System:
-    Dcache Size = 4096 : ways = 2 : block size = 32
-    Icache Size = 4096 : ways = 2 : block size = 32
-    L2-cache Size = 8192 : ways = 4 : block size = 64
+    Dcache Size = 8192 : ways = 2 : block size = 32
+    Icache Size = 8192 : ways = 2 : block size = 32
+    L2-cache Size = 32768 : ways = 4 : block size = 64
     Memory ready time = 30 : chunksize = 8 : chunktime = 15
 
 Execute Time = 74513693971; Total References = 10000000076
