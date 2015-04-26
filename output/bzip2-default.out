@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		bzip2.default		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 8192 : ways = 1 : block size = 32
+    Icache Size = 8192 : ways = 1 : block size = 32
+    L2-cache Size = 32768 : ways = 1 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 53229846334; Total References = 10000000073
+Flush Time = 441989198
+Inst refs = 7565217787; Data refs = 2434782286
+
+Number of references types: [Percentage]
+    Reads  =     1882275327    [18.8%]
+    Writes =     552506959    [5.5%]
+    Inst.  =     7565217787    [75.7%]
+    Total  =     10000000073
+
+Total cycles for activities: [Percentage]
+    Reads  =     21895048990    [41.1%]
+    Writes =     18718145246    [35.2%]
+    Inst.  =     12616652098    [23.7%]
+    Total  =     53229846334
+
+Average cycles for activites:
+  Read =  11.6; Write =  33.9; Inst. =  7.0
+Ideal: Exec. Time = 17565217860; CPI =  2.3
+Ideal mis-aligned: Exec. Time = 22199500705; CPI = 2.9
+
+Memory Level: L1i
+    Hit Count = 12094754630  Miss Count = 1327892
+    Total Requests = 12096082522
+    Hit Rate = 100.0%   Miss Rate = 0.0%
+    Kickouts = 782784; Dirty Kickouts = 0; Transfers = 1327892
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 2360100410  Miss Count = 178099986
+    Total Requests = 2538200396
+    Hit Rate = 93.0%   Miss Rate = 7.0%
+    Kickouts = 173028492; Dirty Kickouts = 69160663; Transfers = 179327276
+    Flush Kickouts  =  1227290
+
+Memory Level: L2
+    Hit Count = 99848952  Miss Count = 149966879
+    Total Requests = 249815831
+    Hit Rate = 40.0%   Miss Rate = 60.0%
+    Kickouts = 140328521; Dirty Kickouts = 57867755; Transfers = 152251807
+    Flush Kickouts  =  2284928
+
+L1 cache cost (Icache $200) + (Dcache $200) = $400
+L2 cache cost = $50;   Memory Cost = $75   Total Cost = $525
+Flushes = 19908 : Invalidates = 19908
+
