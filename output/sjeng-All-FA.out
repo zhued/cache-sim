@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+        sjeng.All-FA       Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 32 : ways = 256 : block size = 32
+    Icache Size = 32 : ways = 256 : block size = 32
+    L2-cache Size = 64 : ways = 512 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 33408802189; Total References = 10000000109
+Flush Time = 585242533
+Inst refs = 7364538494; Data refs = 2635461615
+
+Number of references types: [Percentage]
+    Reads  =     1907768017    [19.1%]
+    Writes =     727693598    [7.3%]
+    Inst.  =     7364538494    [73.6%]
+    Total  =     10000000109
+
+Total cycles for activities: [Percentage]
+    Reads  =     7141935346    [21.4%]
+    Writes =     5112141054    [15.3%]
+    Inst.  =     21154725789    [63.3%]
+    Total  =     33408802189
+
+Average cycles for activites:
+  Read =  3.7; Write =  7.0; Inst. =  4.5
+Ideal: Exec. Time = 17364538603; CPI =  2.4
+Ideal mis-aligned: Exec. Time = 23214492795; CPI = 3.2
+
+Memory Level: L1i
+    Hit Count = 12304531662  Miss Count = 247844130
+    Total Requests = 12552375792
+    Hit Rate = 98.0%   Miss Rate = 2.0%
+    Kickouts = 242908780; Dirty Kickouts = 0; Transfers = 247844130
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 3228649349  Miss Count = 68929160
+    Total Requests = 3297578509
+    Hit Rate = 97.9%   Miss Rate = 2.1%
+    Kickouts = 63967624; Dirty Kickouts = 35733591; Transfers = 71351092
+    Flush Kickouts  =  2421932
+
+Memory Level: L2
+    Hit Count = 299602024  Miss Count = 55326789
+    Total Requests = 354928813
+    Hit Rate = 84.4%   Miss Rate = 15.6%
+    Kickouts = 45404076; Dirty Kickouts = 14057553; Transfers = 58010290
+    Flush Kickouts  =  2683501
+
+L1 cache cost (Icache $1800) + (Dcache $1800) = $3600
+L2 cache cost = $500;   Memory Cost = $75   Total Cost = $4175
+Flushes = 19380 : Invalidates = 19380
+
