@@ -1,3 +1,6 @@
+----------------------------------------------------------------------
+          sjeng.mem_config64              Simulation Results
+----------------------------------------------------------------------
 
 Memory System:
     Dcache Size = 8192 : ways = 1 : block size = 32
@@ -50,4 +53,3 @@ Memory Level: L2
 L1 cache cost (Icache $200) + (Dcache $200) = $400
 L2 cache cost = $50;   Memory Cost = $375   Total Cost = $825
 Flushes = 19380 : Invalidates = 19380
-
