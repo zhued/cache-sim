@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		h264ref.L1-small-4way		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 1024 : ways = 4 : block size = 32
+    Icache Size = 1024 : ways = 4 : block size = 32
+    L2-cache Size = 32768 : ways = 1 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 31459829393; Total References = 10000000106
+Flush Time = 476672396
+Inst refs = 6730089151; Data refs = 3269910955
+
+Number of references types: [Percentage]
+    Reads  =     2689845793    [26.9%]
+    Writes =     580065162    [5.8%]
+    Inst.  =     6730089151    [67.3%]
+    Total  =     10000000106
+
+Total cycles for activities: [Percentage]
+    Reads  =     11583795195    [36.8%]
+    Writes =     3274434243    [10.4%]
+    Inst.  =     16601599955    [52.8%]
+    Total  =     31459829393
+
+Average cycles for activites:
+  Read =  4.3; Write =  5.6; Inst. =  4.7
+Ideal: Exec. Time = 16730089257; CPI =  2.5
+Ideal mis-aligned: Exec. Time = 21962901365; CPI = 3.3
+
+Memory Level: L1i
+    Hit Count = 11142436561  Miss Count = 65640327
+    Total Requests = 11208076888
+    Hit Rate = 99.4%   Miss Rate = 0.6%
+    Kickouts = 63953917; Dirty Kickouts = 0; Transfers = 65640327
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 3902136074  Miss Count = 122599252
+    Total Requests = 4024735326
+    Hit Rate = 97.0%   Miss Rate = 3.0%
+    Kickouts = 120332251; Dirty Kickouts = 28040657; Transfers = 123209089
+    Flush Kickouts  =  609837
+
+Memory Level: L2
+    Hit Count = 153586378  Miss Count = 63303695
+    Total Requests = 216890073
+    Hit Rate = 70.8%   Miss Rate = 29.2%
+    Kickouts = 55736379; Dirty Kickouts = 11028035; Transfers = 66111344
+    Flush Kickouts  =  2807649
+
+L1 cache cost (Icache $300) + (Dcache $300) = $600
+L2 cache cost = $50;   Memory Cost = $75   Total Cost = $725
+Flushes = 17710 : Invalidates = 17710
+
