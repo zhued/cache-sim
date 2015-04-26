@@ -3,8 +3,8 @@
 ----------------------------------------------------------------------
 
 Memory System:
-    Dcache Size = 4096 : ways = 2 : block size = 32
-    Icache Size = 4096 : ways = 2 : block size = 32
+    Dcache Size = 8192 : ways = 2 : block size = 32
+    Icache Size = 8192 : ways = 2 : block size = 32
     L2-cache Size = 65536 : ways = 1 : block size = 64
     Memory ready time = 30 : chunksize = 8 : chunktime = 15
 
