@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		omnetpp.custom-L1-big		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 16384 : ways = 1 : block size = 32
+    Icache Size = 16384 : ways = 1 : block size = 32
+    L2-cache Size = 32768 : ways = 1 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 88442709126; Total References = 10000000076
+Flush Time = 998488436
+Inst refs = 6748671723; Data refs = 3251328353
+
+Number of references types: [Percentage]
+    Reads  =     2011922989    [20.1%]
+    Writes =     1239405364    [12.4%]
+    Inst.  =     6748671723    [67.5%]
+    Total  =     10000000076
+
+Total cycles for activities: [Percentage]
+    Reads  =     44008736519    [49.8%]
+    Writes =     10439721100    [11.8%]
+    Inst.  =     33994251507    [38.4%]
+    Total  =     88442709126
+
+Average cycles for activites:
+  Read =  21.9; Write =  8.4; Inst. =  13.1
+Ideal: Exec. Time = 16748671799; CPI =  2.5
+Ideal mis-aligned: Exec. Time = 24145770580; CPI = 3.6
+
+Memory Level: L1i
+    Hit Count = 11222038529  Miss Count = 237446544
+    Total Requests = 11459485073
+    Hit Rate = 97.9%   Miss Rate = 2.1%
+    Kickouts = 230190909; Dirty Kickouts = 0; Transfers = 237446544
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 5656483223  Miss Count = 281130561
+    Total Requests = 5937613784
+    Hit Rate = 95.3%   Miss Rate = 4.7%
+    Kickouts = 272077049; Dirty Kickouts = 124994277; Transfers = 285098227
+    Flush Kickouts  =  3967666
+
+Memory Level: L2
+    Hit Count = 358132636  Miss Count = 289406412
+    Total Requests = 647539048
+    Hit Rate = 55.3%   Miss Rate = 44.7%
+    Kickouts = 280369819; Dirty Kickouts = 73707604; Transfers = 293718037
+    Flush Kickouts  =  4311625
+
+L1 cache cost (Icache $400) + (Dcache $400) = $800
+L2 cache cost = $50;   Memory Cost = $75   Total Cost = $925
+Flushes = 17759 : Invalidates = 17759
+

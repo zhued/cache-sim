@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		h264ref.custom-L1-big		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 16384 : ways = 1 : block size = 32
+    Icache Size = 16384 : ways = 1 : block size = 32
+    L2-cache Size = 32768 : ways = 1 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 33322775869; Total References = 10000000106
+Flush Time = 684666786
+Inst refs = 6730089151; Data refs = 3269910955
+
+Number of references types: [Percentage]
+    Reads  =     2689845793    [26.9%]
+    Writes =     580065162    [5.8%]
+    Inst.  =     6730089151    [67.3%]
+    Total  =     10000000106
+
+Total cycles for activities: [Percentage]
+    Reads  =     14294526928    [42.9%]
+    Writes =     3817508212    [11.5%]
+    Inst.  =     15210740729    [45.6%]
+    Total  =     33322775869
+
+Average cycles for activites:
+  Read =  5.3; Write =  6.6; Inst. =  5.0
+Ideal: Exec. Time = 16730089257; CPI =  2.5
+Ideal mis-aligned: Exec. Time = 21962901365; CPI = 3.3
+
+Memory Level: L1i
+    Hit Count = 11173122678  Miss Count = 34954210
+    Total Requests = 11208076888
+    Hit Rate = 99.7%   Miss Rate = 0.3%
+    Kickouts = 30538088; Dirty Kickouts = 0; Transfers = 34954210
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 3894031543  Miss Count = 130703783
+    Total Requests = 4024735326
+    Hit Rate = 96.8%   Miss Rate = 3.2%
+    Kickouts = 122396601; Dirty Kickouts = 34045528; Transfers = 134053937
+    Flush Kickouts  =  3350154
+
+Memory Level: L2
+    Hit Count = 129575884  Miss Count = 73477791
+    Total Requests = 203053675
+    Hit Rate = 63.8%   Miss Rate = 36.2%
+    Kickouts = 65717643; Dirty Kickouts = 13083056; Transfers = 76692919
+    Flush Kickouts  =  3215128
+
+L1 cache cost (Icache $400) + (Dcache $400) = $800
+L2 cache cost = $50;   Memory Cost = $75   Total Cost = $925
+Flushes = 17710 : Invalidates = 17710
+

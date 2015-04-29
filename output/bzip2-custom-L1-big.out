@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		bzip2.custom-L1-big		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 16384 : ways = 1 : block size = 32
+    Icache Size = 16384 : ways = 1 : block size = 32
+    L2-cache Size = 32768 : ways = 1 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 54429359623; Total References = 10000000073
+Flush Time = 619864597
+Inst refs = 7565217787; Data refs = 2434782286
+
+Number of references types: [Percentage]
+    Reads  =     1882275327    [18.8%]
+    Writes =     552506959    [5.5%]
+    Inst.  =     7565217787    [75.7%]
+    Total  =     10000000073
+
+Total cycles for activities: [Percentage]
+    Reads  =     22264211570    [40.9%]
+    Writes =     19384958922    [35.6%]
+    Inst.  =     12780189131    [23.5%]
+    Total  =     54429359623
+
+Average cycles for activites:
+  Read =  11.8; Write =  35.1; Inst. =  7.2
+Ideal: Exec. Time = 17565217860; CPI =  2.3
+Ideal mis-aligned: Exec. Time = 22199500705; CPI = 2.9
+
+Memory Level: L1i
+    Hit Count = 12095524687  Miss Count = 557835
+    Total Requests = 12096082522
+    Hit Rate = 100.0%   Miss Rate = 0.0%
+    Kickouts = 6465; Dirty Kickouts = 0; Transfers = 557835
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 2372793489  Miss Count = 165406907
+    Total Requests = 2538200396
+    Hit Rate = 93.5%   Miss Rate = 6.5%
+    Kickouts = 155523964; Dirty Kickouts = 63980822; Transfers = 167796750
+    Flush Kickouts  =  2389843
+
+Memory Level: L2
+    Hit Count = 74234073  Miss Count = 158101334
+    Total Requests = 232335407
+    Hit Rate = 32.0%   Miss Rate = 68.0%
+    Kickouts = 148387546; Dirty Kickouts = 58444848; Transfers = 160538724
+    Flush Kickouts  =  2437390
+
+L1 cache cost (Icache $400) + (Dcache $400) = $800
+L2 cache cost = $50;   Memory Cost = $75   Total Cost = $925
+Flushes = 19908 : Invalidates = 19908
+

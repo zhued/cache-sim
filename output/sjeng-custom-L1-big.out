@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		sjeng.custom-L1-big		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 16384 : ways = 1 : block size = 32
+    Icache Size = 16384 : ways = 1 : block size = 32
+    L2-cache Size = 32768 : ways = 1 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 43950724974; Total References = 10000000109
+Flush Time = 1254715713
+Inst refs = 7364538494; Data refs = 2635461615
+
+Number of references types: [Percentage]
+    Reads  =     1907768017    [19.1%]
+    Writes =     727693598    [7.3%]
+    Inst.  =     7364538494    [73.6%]
+    Total  =     10000000109
+
+Total cycles for activities: [Percentage]
+    Reads  =     11639182865    [26.5%]
+    Writes =     7327593675    [16.7%]
+    Inst.  =     24983948434    [56.8%]
+    Total  =     43950724974
+
+Average cycles for activites:
+  Read =  6.1; Write =  10.1; Inst. =  6.0
+Ideal: Exec. Time = 17364538603; CPI =  2.4
+Ideal mis-aligned: Exec. Time = 23214492795; CPI = 3.2
+
+Memory Level: L1i
+    Hit Count = 12405895342  Miss Count = 146480450
+    Total Requests = 12552375792
+    Hit Rate = 98.8%   Miss Rate = 1.2%
+    Kickouts = 138332948; Dirty Kickouts = 0; Transfers = 146480450
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 3190936834  Miss Count = 106641675
+    Total Requests = 3297578509
+    Hit Rate = 96.8%   Miss Rate = 3.2%
+    Kickouts = 98817405; Dirty Kickouts = 49328953; Transfers = 111361755
+    Flush Kickouts  =  4720080
+
+Memory Level: L2
+    Hit Count = 195693504  Miss Count = 111477654
+    Total Requests = 307171158
+    Hit Rate = 63.7%   Miss Rate = 36.3%
+    Kickouts = 102429918; Dirty Kickouts = 24215057; Transfers = 116158303
+    Flush Kickouts  =  4680649
+
+L1 cache cost (Icache $400) + (Dcache $400) = $800
+L2 cache cost = $50;   Memory Cost = $75   Total Cost = $925
+Flushes = 19380 : Invalidates = 19380
+
