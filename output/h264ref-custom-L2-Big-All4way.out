@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		h264ref.custom-L2-Big-All4way		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 8192 : ways = 4 : block size = 32
+    Icache Size = 8192 : ways = 4 : block size = 32
+    L2-cache Size = 65536 : ways = 4 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 23284345682; Total References = 10000000106
+Flush Time = 893943639
+Inst refs = 6730089151; Data refs = 3269910955
+
+Number of references types: [Percentage]
+    Reads  =     2689845793    [26.9%]
+    Writes =     580065162    [5.8%]
+    Inst.  =     6730089151    [67.3%]
+    Total  =     10000000106
+
+Total cycles for activities: [Percentage]
+    Reads  =     7290457370    [31.3%]
+    Writes =     2146559779    [9.2%]
+    Inst.  =     13847328533    [59.5%]
+    Total  =     23284345682
+
+Average cycles for activites:
+  Read =  2.7; Write =  3.7; Inst. =  3.5
+Ideal: Exec. Time = 16730089257; CPI =  2.5
+Ideal mis-aligned: Exec. Time = 21962901365; CPI = 3.3
+
+Memory Level: L1i
+    Hit Count = 11159355699  Miss Count = 48721189
+    Total Requests = 11208076888
+    Hit Rate = 99.6%   Miss Rate = 0.4%
+    Kickouts = 45599000; Dirty Kickouts = 0; Transfers = 48721189
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 3962032699  Miss Count = 62702627
+    Total Requests = 4024735326
+    Hit Rate = 98.4%   Miss Rate = 1.6%
+    Kickouts = 58175096; Dirty Kickouts = 15514970; Transfers = 64163345
+    Flush Kickouts  =  1460718
+
+Memory Level: L2
+    Hit Count = 100186708  Miss Count = 28212796
+    Total Requests = 128399504
+    Hit Rate = 78.0%   Miss Rate = 22.0%
+    Kickouts = 14377967; Dirty Kickouts = 2745701; Transfers = 33608221
+    Flush Kickouts  =  5395425
+
+L1 cache cost (Icache $600) + (Dcache $600) = $1200
+L2 cache cost = $300;   Memory Cost = $75   Total Cost = $1575
+Flushes = 17710 : Invalidates = 17710
+

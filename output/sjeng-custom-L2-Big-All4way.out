@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		sjeng.custom-L2-Big-All4way		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 8192 : ways = 4 : block size = 32
+    Icache Size = 8192 : ways = 4 : block size = 32
+    L2-cache Size = 65536 : ways = 4 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 30613648029; Total References = 10000000109
+Flush Time = 977701764
+Inst refs = 7364538494; Data refs = 2635461615
+
+Number of references types: [Percentage]
+    Reads  =     1907768017    [19.1%]
+    Writes =     727693598    [7.3%]
+    Inst.  =     7364538494    [73.6%]
+    Total  =     10000000109
+
+Total cycles for activities: [Percentage]
+    Reads  =     6113817379    [20.0%]
+    Writes =     5191002518    [17.0%]
+    Inst.  =     19308828132    [63.1%]
+    Total  =     30613648029
+
+Average cycles for activites:
+  Read =  3.2; Write =  7.1; Inst. =  4.2
+Ideal: Exec. Time = 17364538603; CPI =  2.4
+Ideal mis-aligned: Exec. Time = 23214492795; CPI = 3.2
+
+Memory Level: L1i
+    Hit Count = 12332868797  Miss Count = 219506995
+    Total Requests = 12552375792
+    Hit Rate = 98.3%   Miss Rate = 1.7%
+    Kickouts = 214571765; Dirty Kickouts = 0; Transfers = 219506995
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 3200939266  Miss Count = 96639243
+    Total Requests = 3297578509
+    Hit Rate = 97.1%   Miss Rate = 2.9%
+    Kickouts = 91680120; Dirty Kickouts = 43578332; Transfers = 99076445
+    Flush Kickouts  =  2437202
+
+Memory Level: L2
+    Hit Count = 324341002  Miss Count = 37820770
+    Total Requests = 362161772
+    Hit Rate = 89.6%   Miss Rate = 10.4%
+    Kickouts = 21862914; Dirty Kickouts = 11199018; Transfers = 43490829
+    Flush Kickouts  =  5670059
+
+L1 cache cost (Icache $600) + (Dcache $600) = $1200
+L2 cache cost = $300;   Memory Cost = $75   Total Cost = $1575
+Flushes = 19380 : Invalidates = 19380
+

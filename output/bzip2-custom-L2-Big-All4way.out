@@ -1,0 +1,56 @@
+----------------------------------------------------------------------
+		bzip2.custom-L2-Big-All4way		Simulation Results          
+----------------------------------------------------------------------
+
+Memory System:
+    Dcache Size = 8192 : ways = 4 : block size = 32
+    Icache Size = 8192 : ways = 4 : block size = 32
+    L2-cache Size = 65536 : ways = 4 : block size = 64
+    Memory ready time = 30 : chunksize = 8 : chunktime = 15
+
+Execute Time = 48216790208; Total References = 10000000073
+Flush Time = 723087476
+Inst refs = 7565217787; Data refs = 2434782286
+
+Number of references types: [Percentage]
+    Reads  =     1882275327    [18.8%]
+    Writes =     552506959    [5.5%]
+    Inst.  =     7565217787    [75.7%]
+    Total  =     10000000073
+
+Total cycles for activities: [Percentage]
+    Reads  =     18298910235    [38.0%]
+    Writes =     17036204390    [35.3%]
+    Inst.  =     12881675583    [26.7%]
+    Total  =     48216790208
+
+Average cycles for activites:
+  Read =  9.7; Write =  30.8; Inst. =  6.4
+Ideal: Exec. Time = 17565217860; CPI =  2.3
+Ideal mis-aligned: Exec. Time = 22199500705; CPI = 2.9
+
+Memory Level: L1i
+    Hit Count = 12095527306  Miss Count = 555216
+    Total Requests = 12096082522
+    Hit Rate = 100.0%   Miss Rate = 0.0%
+    Kickouts = 1778; Dirty Kickouts = 0; Transfers = 555216
+    Flush Kickouts  =  0
+
+Memory Level: L1d
+    Hit Count = 2380037622  Miss Count = 158162774
+    Total Requests = 2538200396
+    Hit Rate = 93.8%   Miss Rate = 6.2%
+    Kickouts = 153066463; Dirty Kickouts = 61597513; Transfers = 159395257
+    Flush Kickouts  =  1232483
+
+Memory Level: L2
+    Hit Count = 94575336  Miss Count = 126972650
+    Total Requests = 221547986
+    Hit Rate = 42.7%   Miss Rate = 57.3%
+    Kickouts = 108181098; Dirty Kickouts = 51264574; Transfers = 131308932
+    Flush Kickouts  =  4336282
+
+L1 cache cost (Icache $600) + (Dcache $600) = $1200
+L2 cache cost = $300;   Memory Cost = $75   Total Cost = $1575
+Flushes = 19908 : Invalidates = 19908
+
