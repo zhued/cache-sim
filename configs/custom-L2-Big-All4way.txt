@@ -1,0 +1,4 @@
+l1_assoc_i=4
+l1_assoc_d=4
+l2_cache_size=65536
+l2_assoc=4

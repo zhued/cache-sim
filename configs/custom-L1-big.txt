@@ -1,0 +1,2 @@
+l1_cache_size_i=16392
+l1_cache_size_d=16392
