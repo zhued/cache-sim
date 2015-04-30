@@ -63,9 +63,6 @@ static void update_lru(struct cache *cache, int index, int way)
 
 	if (cur->elem == way) return;
 
-	/* for (int i = 0; i < way - 1; i++) { */
-	/* 	cur = cur->next; */
-	/* } */
 	while (cur->next && cur->next->elem != way) {
 		cur = cur->next;
 	}
