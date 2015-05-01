@@ -14,9 +14,11 @@ Authors: Edward Zhu, Maxwell Russek
 
 ### How to Run the Simulation
 
+```
   make
-  
+
   zcat < /path/to/trace | ./cache-sim <CONFIG>
+```
 
 ### Folder layout
 
